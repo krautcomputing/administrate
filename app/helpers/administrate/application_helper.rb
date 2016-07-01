@@ -6,7 +6,17 @@ module Administrate
 
     def render_field(field, locals = {})
       locals.merge!(field: field)
-      render locals: locals, partial: field.to_partial_path
+      partial = [
+        "admin/#{field.resource.class.to_s.downcase.pluralize}/fields/#{field.attribute}/#{field.page}",
+        "admin/fields/#{field.class.field_type}/#{field.page}",
+        "fields/#{field.class.field_type}/#{field.page}"
+      ].detect do |partial|
+        lookup_context.exists? partial, [], true
+      end
+      unless partial
+        fail "Could not find partial for field #{field}."
+      end
+      render locals: locals, partial: partial
     end
 
     def display_resource_name(resource_name)
