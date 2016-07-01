@@ -36,16 +36,14 @@ module Administrate
     end
 
     def create
-      resource = resource_class.new(resource_params)
-
-      if resource.save
+      if new_resource.save
         redirect_to(
-          [namespace, resource],
+          [namespace, new_resource],
           notice: translate_with_resource("create.success"),
         )
       else
         render :new, locals: {
-          page: Administrate::Page::Form.new(dashboard, resource),
+          page: Administrate::Page::Form.new(dashboard, new_resource),
         }
       end
     end
@@ -94,6 +92,10 @@ module Administrate
 
     def requested_resource
       @_requested_resource ||= find_resource(params[:id])
+    end
+
+    def new_resource
+      @_new_resource ||= resource_class.new(resource_params)
     end
 
     def find_resource(param)
