@@ -6,6 +6,7 @@ module Administrate
       search_term = params[:search].to_s.strip
       resources = Administrate::Search.new(resource_resolver, search_term).run
       resources = order.apply(resources)
+      resources = customize_resource_fetching(resources)
       resources = resources.page(params[:page]).per(records_per_page)
       page = Administrate::Page::Collection.new(dashboard, order: order)
 
@@ -121,6 +122,12 @@ module Administrate
         "administrate.controller.#{key}",
         resource: resource_resolver.resource_title,
       )
+    end
+
+    # Override this method in your resource controller
+    # to apply `includes` or `eager_load`
+    def customize_resource_fetching(resources)
+      resources
     end
   end
 end
