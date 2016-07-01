@@ -1,5 +1,9 @@
 module Administrate
   module ApplicationHelper
+    def page_html_class
+      "#{params[:controller].split('/').last} #{params[:action]}"
+    end
+
     def render_field(field, locals = {})
       locals.merge!(field: field)
       render locals: locals, partial: field.to_partial_path
