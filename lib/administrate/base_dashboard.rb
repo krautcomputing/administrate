@@ -14,6 +14,11 @@ module Administrate
   class BaseDashboard
     include Administrate
 
+    FORM_ATTRIBUTE_ACTION_ALIASES = {
+      create: 'new',
+      update: 'edit'
+    }.freeze
+
     def attribute_types
       self.class::ATTRIBUTE_TYPES
     end
@@ -30,12 +35,23 @@ module Administrate
       end
     end
 
-    def form_attributes
-      self.class::FORM_ATTRIBUTES
+    def form_attributes(action)
+      const_candidates = [:"#{action.upcase}_FORM_ATTRIBUTES"]
+      if action_alias = FORM_ATTRIBUTE_ACTION_ALIASES[action.to_sym]
+        const_candidates << :"#{action_alias.upcase}_FORM_ATTRIBUTES"
+      end
+      const_candidates << :FORM_ATTRIBUTES
+      const = const_candidates.detect do |const_candidate|
+        self.class.const_defined?(const_candidate)
+      end
+      unless const
+        fail const_not_found_message(const_candidates)
+      end
+      self.class.const_get(const)
     end
 
-    def permitted_attributes
-      form_attributes.map do |attr|
+    def permitted_attributes(action)
+      form_attributes(action).map do |attr|
         attribute_types[attr].permitted_attribute(attr)
       end.uniq
     end
@@ -56,6 +72,10 @@ module Administrate
 
     def attribute_not_found_message(attr)
       "Attribute #{attr} could not be found in #{self.class}::ATTRIBUTE_TYPES"
+    end
+
+    def const_not_found_message(candidates)
+      "None of the form attributes constants could be found on #{self.class}: #{candidates.join(', ')}"
     end
   end
 end

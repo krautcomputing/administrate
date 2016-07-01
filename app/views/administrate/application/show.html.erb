@@ -30,7 +30,7 @@ as well as a link to its edit page.
 </header>
 
 <dl>
-  <% page.attributes.each do |attribute| %>
+  <% page.attributes(params[:action]).each do |attribute| %>
     <dt class="attribute-label">
     <%= t(
       "helpers.label.#{resource_name}.#{attribute.name}",
