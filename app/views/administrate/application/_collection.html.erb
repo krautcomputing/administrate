@@ -53,7 +53,7 @@ to display a collection of resources in an HTML table.
 
   <tbody>
     <% resources.each do |resource| %>
-      <tr class="table__row"
+      <tr class="table__row <%= collection_presenter.resource_html_class(resource) -%>"
           role="link"
           tabindex="0"
           data-url="<%= polymorphic_path([namespace, resource]) -%>"

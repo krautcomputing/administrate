@@ -22,6 +22,7 @@ module Administrate
       end
 
       delegate :ordered_by?, :order_params_for, to: :order
+      delegate :resource_html_class, to: :dashboard
 
       private
 

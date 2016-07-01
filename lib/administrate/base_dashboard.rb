@@ -68,6 +68,11 @@ module Administrate
       "#{resource.class} ##{resource.id}"
     end
 
+    # Override this method in your dashboard
+    # to add a class to each resource row in the table.
+    def resource_html_class(resource)
+    end
+
     private
 
     def attribute_not_found_message(attr)
