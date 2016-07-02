@@ -28,7 +28,15 @@ module Administrate
         search_attributes.each do |attribute|
           attribute_with_table_name = "#{table_name(attribute)}.#{attribute}"
           column = resource_class.columns_hash[attribute.to_s] || (resource_class.acting_as? && resource_class.acting_as_model.columns_hash[attribute.to_s])
-          if column.array
+          case
+          when column.type == :integer && enum = resource_class.defined_enums[attribute.to_s]
+            enum_values = enum.select { |k, _| k =~ /#{Regexp.escape(@term)}/i }
+            if enum_values.any?
+              condition_param = "#{attribute}_enum_keys".to_sym
+              condition_parts << "#{attribute_with_table_name} IN (:#{condition_param})"
+              condition_params[condition_param] = enum_values.values
+            end
+          when column.array
             # Find IDs of records that contain the query in the column array.
             # Use a subquery and `array_to_string` so we can us ILIKE.
             list_column = "#{attribute}_list"
