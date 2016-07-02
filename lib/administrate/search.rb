@@ -23,19 +23,43 @@ module Administrate
           relation.joins!(resource_class.acting_as_name.to_sym)
         end
         # Set up condition parts and params
-        condition_parts = search_attributes.map { |attribute| "LOWER(#{table_name(attribute)}.#{attribute}) LIKE :query" }
-        condition_params = { query: "%#{@term.downcase}%" }
+        condition_parts = []
+        condition_params = { query: "%#{@term}%" }
+        search_attributes.each do |attribute|
+          attribute_with_table_name = "#{table_name(attribute)}.#{attribute}"
+          column = resource_class.columns_hash[attribute.to_s] || (resource_class.acting_as? && resource_class.acting_as_model.columns_hash[attribute.to_s])
+          if column.array
+            # Find IDs of records that contain the query in the column array.
+            # Use a subquery and `array_to_string` so we can us ILIKE.
+            list_column = "#{attribute}_list"
+            ids = resource_class.
+                    select("#{resource_class.table_name}.id").
+                    from("#{resource_class.table_name}, array_to_string(#{attribute_with_table_name}, ',') AS #{list_column}").
+                    where("#{list_column} ILIKE ?", "%#{@term}%").
+                    map(&:id)
+            if ids.any?
+              condition_param = "#{attribute}_ids".to_sym
+              condition_parts << "#{resource_class.table_name}.id IN (:#{condition_param})"
+              condition_params[condition_param] = ids
+            end
+          else
+            condition_parts << "#{attribute_with_table_name} ILIKE :query"
+          end
+        end
         if @search_relations
           # Create a resolver and search for each search relation.
           # Find only the IDs for each search relation and add them
           # as a condition part.
           search_relations.each do |search_relation|
-            resolver = Administrate::ResourceResolver.new("admin/#{search_relation}")
+            resolver = Administrate::ResourceResolver.new("admin/#{search_relation.to_s.pluralize}")
             search = self.class.new(resolver, @term, false)
-            condition_param = "#{search_relation}_ids".to_sym
-            condition_parts << "#{resolver.resource_class.table_name}.id IN (:#{condition_param})"
-            condition_params[condition_param] = search.run.ids
-            relation.joins!(resolver.resource_class.table_name.to_sym)
+            ids = search.run.ids
+            if ids.any?
+              condition_param = "#{search_relation}_ids".to_sym
+              condition_parts << "#{resolver.resource_class.table_name}.id IN (:#{condition_param})"
+              condition_params[condition_param] = ids
+              relation.joins!(search_relation)
+            end
           end
         end
         relation.where!(condition_parts.join(' OR '), condition_params)
