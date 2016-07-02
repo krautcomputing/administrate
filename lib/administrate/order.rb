@@ -6,8 +6,11 @@ module Administrate
     end
 
     def apply(relation)
-      if relation.columns_hash.keys.include?(attribute.to_s)
+      case
+      when relation.columns_hash.key?(attribute.to_s)
         relation.order(attribute => direction)
+      when relation.acting_as? && relation.acting_as_model.columns_hash.key?(attribute.to_s)
+        relation.order("#{relation.acting_as_model.table_name}.#{attribute} #{direction}")
       else
         relation
       end
