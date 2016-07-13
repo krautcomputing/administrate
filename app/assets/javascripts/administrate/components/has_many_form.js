@@ -1,3 +1,3 @@
 $(function() {
-  $(".field-unit--has-many select").selectize({});
+  $("select", ".field-unit--has-many, .field-unit--belongs-to").selectize({});
 });
