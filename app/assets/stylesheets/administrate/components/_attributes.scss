@@ -15,4 +15,5 @@
   @include span-columns(10 of 12);
   @include omega;
   margin-bottom: $base-spacing;
+  max-width: 800px;
 }
