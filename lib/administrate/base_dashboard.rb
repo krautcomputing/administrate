@@ -67,7 +67,7 @@ module Administrate
     end
 
     def display_resource(resource)
-      "#{resource.class} ##{resource.id}"
+      resource.to_s
     end
 
     # Override this method in your dashboard
