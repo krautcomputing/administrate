@@ -40,16 +40,26 @@ module Administrate
             # Find IDs of records that contain the query in the column array.
             # Use a subquery and `array_to_string` so we can us ILIKE.
             list_column = "#{attribute}_list"
-            ids = resource_class.
-                    select("#{resource_class.table_name}.id").
-                    from("#{resource_class.table_name}, array_to_string(#{attribute_with_table_name}, ',') AS #{list_column}").
-                    where("#{list_column} ILIKE ?", "%#{@term}%").
-                    map(&:id)
-            if ids.any?
-              condition_param = "#{attribute}_ids".to_sym
-              condition_parts << "#{resource_class.table_name}.id IN (:#{condition_param})"
-              condition_params[condition_param] = ids
+            if resource_class.acting_as? && resource_class.acting_as_model.attribute_method?(attribute)
+              acting_as_ids = resource_class.acting_as_model.
+                      select("#{resource_class.acting_as_model.table_name}.id").
+                      from("#{resource_class.acting_as_model.table_name}, array_to_string(#{attribute_with_table_name}, ',') AS #{list_column}").
+                      where("#{list_column} ILIKE ?", "%#{@term}%")
+              ids = resource_class.
+                      joins(resource_class.acting_as_name.to_sym).
+                      select("#{resource_class.table_name}.id").
+                      where("#{resource_class.acting_as_model.table_name}.id IN (?)", acting_as_ids).
+                      map(&:id)
+            else
+              ids = resource_class.
+                      select("#{resource_class.table_name}.id").
+                      from("#{resource_class.table_name}, array_to_string(#{attribute_with_table_name}, ',') AS #{list_column}").
+                      where("#{list_column} ILIKE ?", "%#{@term}%").
+                      map(&:id)
             end
+            condition_param = "#{attribute}_ids".to_sym
+            condition_parts << "#{resource_class.table_name}.id IN (:#{condition_param})"
+            condition_params[condition_param] = ids
           else
             condition_parts << "#{attribute_with_table_name} ILIKE :query"
           end
