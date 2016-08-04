@@ -24,8 +24,9 @@ module Administrate
     end
 
     def new
+      initialized_resource = resource_class.new(params.permit(*permitted_attributes))
       render locals: {
-        page: Administrate::Page::Form.new(dashboard, resource_class.new),
+        page: Administrate::Page::Form.new(dashboard, initialized_resource),
       }
     end
 
