@@ -39,7 +39,7 @@ module Administrate
     def create
       if new_resource.save
         redirect_to(
-          [namespace, new_resource],
+          after_create_path,
           notice: translate_with_resource("create.success"),
         )
       else
@@ -131,6 +131,12 @@ module Administrate
     # to apply `includes` or `eager_load`
     def customize_resource_fetching(resources)
       resources
+    end
+
+    # Override this method in your resource controller
+    # to redirect somewhere else.
+    def after_create_path
+      [namespace, new_resource]
     end
   end
 end
