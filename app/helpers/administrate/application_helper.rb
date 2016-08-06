@@ -6,12 +6,16 @@ module Administrate
 
     def render_field(field, locals = {})
       locals.merge!(field: field)
-      partial = [
-        "admin/#{field.resource.class.to_s.downcase.pluralize}/fields/#{field.attribute}/#{field.page}",
+      # Look up both the resource's class as well as it's base class (when STI is used).
+      resource_classes = [field.resource.class, field.resource.class.base_class].uniq
+      partial_candidates = resource_classes.map do |klass|
+        "admin/#{klass.to_s.underscore.pluralize}/fields/#{field.attribute}/#{field.page}"
+      end + [
         "admin/fields/#{field.class.field_type}/#{field.page}",
         "fields/#{field.class.field_type}/#{field.page}"
-      ].detect do |partial|
-        lookup_context.exists? partial, [], true
+      ]
+      partial = partial_candidates.detect do |partial_candidate|
+        lookup_context.exists? partial_candidate, [], true
       end
       unless partial
         fail "Could not find partial for field #{field}."
