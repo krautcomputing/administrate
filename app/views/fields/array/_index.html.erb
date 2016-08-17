@@ -1,0 +1,9 @@
+<% if field.data.any? %>
+  <ul>
+    <% field.data.each do |el| %>
+      <li>
+        <%= el %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>

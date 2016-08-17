@@ -1,3 +1,4 @@
+require "administrate/field/array"
 require "administrate/field/belongs_to"
 require "administrate/field/boolean"
 require "administrate/field/date_time"
