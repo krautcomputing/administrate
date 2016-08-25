@@ -36,6 +36,12 @@ and renders all form fields for a resource's editable attributes.
     </div>
   <% end -%>
 
+  <% if page.hidden_fields.present? %>
+    <% page.hidden_fields.each do |k, v| %>
+      <%= hidden_field_tag k, v %>
+    <% end %>
+  <% end %>
+
   <div class="form-actions">
     <%= f.submit %>
   </div>

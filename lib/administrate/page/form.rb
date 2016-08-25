@@ -9,6 +9,7 @@ module Administrate
       end
 
       attr_reader :resource
+      attr_accessor :hidden_fields
 
       def attributes(action)
         dashboard.form_attributes(action).map do |attribute|
