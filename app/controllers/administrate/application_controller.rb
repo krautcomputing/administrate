@@ -19,20 +19,19 @@ module Administrate
 
     def show
       render locals: {
-        page: Administrate::Page::Show.new(dashboard, requested_resource),
+        page: show_page
       }
     end
 
     def new
-      initialized_resource = resource_class.new(params.permit(*permitted_attributes))
       render locals: {
-        page: Administrate::Page::Form.new(dashboard, initialized_resource),
+        page: new_form
       }
     end
 
     def edit
       render locals: {
-        page: Administrate::Page::Form.new(dashboard, requested_resource),
+        page: edit_page
       }
     end
 
@@ -44,7 +43,7 @@ module Administrate
         )
       else
         render :new, locals: {
-          page: Administrate::Page::Form.new(dashboard, new_resource),
+          page: create_form
         }
       end
     end
@@ -57,7 +56,7 @@ module Administrate
         )
       else
         render :edit, locals: {
-          page: Administrate::Page::Form.new(dashboard, requested_resource),
+          page: edit_page
         }
       end
     end
@@ -97,6 +96,26 @@ module Administrate
 
     def new_resource
       @_new_resource ||= resource_class.new(resource_params)
+    end
+
+    def initialized_resource
+      @_initialized_resource ||= resource_class.new(params.permit(*permitted_attributes))
+    end
+
+    def show_page
+      @_show_page ||= Administrate::Page::Show.new(dashboard, requested_resource)
+    end
+
+    def edit_page
+      @_edit_page ||= Administrate::Page::Form.new(dashboard, requested_resource)
+    end
+
+    def new_form
+      @_new_form ||= Administrate::Page::Form.new(dashboard, initialized_resource)
+    end
+
+    def create_form
+      @_create_form ||= Administrate::Page::Form.new(dashboard, new_resource)
     end
 
     def find_resource(param)
