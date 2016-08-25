@@ -76,6 +76,12 @@ module Administrate
     def resource_html_class(resource)
     end
 
+    # Override this method in your dashboard
+    # to add custom resource actions.
+    def resource_actions(resource)
+      []
+    end
+
     private
 
     def attribute_not_found_message(attr)

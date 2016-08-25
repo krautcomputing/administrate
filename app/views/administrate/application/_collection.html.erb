@@ -73,6 +73,9 @@ to display a collection of resources in an HTML table.
             method: :delete,
             data: { confirm: t("administrate.actions.confirm") }
           ) %>
+          <% collection_presenter.resource_actions(resource).each do |action| %>
+            <%= action %>
+          <% end %>
         </td>
         <% collection_presenter.attributes_for(resource).each do |attribute| %>
           <td class="cell-data cell-data--<%= attribute.html_class %>">
