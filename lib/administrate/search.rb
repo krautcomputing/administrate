@@ -26,7 +26,8 @@ module Administrate
         condition_parts = []
         condition_params = { query: "%#{@term}%" }
         search_attributes.each do |attribute|
-          attribute_with_table_name = "#{table_name(attribute)}.#{attribute}"
+          next unless table_name = table_name(attribute)
+          attribute_with_table_name = "#{table_name}.#{attribute}"
           column = resource_class.columns_hash[attribute.to_s] || (resource_class.acting_as? && resource_class.acting_as_model.columns_hash[attribute.to_s])
           case
           when column.type == :integer && enum = resource_class.defined_enums[attribute.to_s]
@@ -90,9 +91,9 @@ module Administrate
     delegate :resource_class, to: :resolver
 
     def table_name(attribute)
-      if resource_class.acting_as? && resource_class.acting_as_model.attribute_method?(attribute)
+      if resource_class.acting_as? && resource_class.acting_as_model.column_names.include?(attribute.to_s)
         resource_class.acting_as_model.table_name
-      else
+      elsif resource_class.column_names.include?(attribute.to_s)
         resource_class.table_name
       end
     end
