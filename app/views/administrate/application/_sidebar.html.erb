@@ -8,12 +8,24 @@ as defined by the routes in the `admin/` namespace
 %>
 
 <ul class="sidebar__list">
-  <% Administrate::Namespace.new(namespace).resources.each do |resource| %>
+  <% ns = Administrate::Namespace.new(namespace) %>
+  <% if ns.namespace_controller_paths.include?('admin/dashboards') %>
+    <li>
+      <%= link_to(
+        'Dashboard',
+        [namespace, :root],
+        class: "sidebar__link
+                sidebar__link--#{controller_name == 'dashboards' ? :active : :inactive}"
+      ) %>
+    </li>
+  <% end %>
+  <% ns.resources.each do |resource| %>
     <li>
       <%= link_to(
         display_resource_name(resource),
         [namespace, resource],
-        class: "sidebar__link sidebar__link--#{nav_link_state(resource)}"
+        class: "sidebar__link
+                sidebar__link--#{nav_link_state(resource)}"
       ) %>
     </li>
   <% end %>

@@ -12,15 +12,15 @@ module Administrate
       end
     end
 
-    private
-
-    attr_reader :namespace
-
     def namespace_controller_paths
       all_controller_paths.select do |controller|
         controller.starts_with?(namespace.to_s)
       end
     end
+
+    private
+
+    attr_reader :namespace
 
     def all_controller_paths
       Rails.application.routes.routes.map do |route|
