@@ -6,7 +6,9 @@ module Administrate
 
     def resources
       namespace_controller_paths.uniq.map do |controller|
-        controller.gsub(/^#{namespace}\//, "").to_sym
+        controller.sub(/^#{namespace}\//, "").to_sym
+      end.select do |resource|
+        resource.to_s.classify.safe_constantize
       end
     end
 
