@@ -51,7 +51,7 @@ module Administrate
       end
 
       def display_candidate_resource(resource)
-        associated_dashboard.display_resource(resource)
+        associated_dashboard.try(:display_resource, resource) || resource.to_s
       end
     end
   end

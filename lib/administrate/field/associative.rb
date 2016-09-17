@@ -10,7 +10,7 @@ module Administrate
       protected
 
       def associated_dashboard
-        "#{associated_class_name}Dashboard".constantize.new
+        "#{associated_class_name}Dashboard".safe_constantize.try(:new)
       end
 
       def associated_class
