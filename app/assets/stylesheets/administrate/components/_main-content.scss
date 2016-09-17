@@ -3,4 +3,16 @@
   box-shadow: 0 2px 4px rgba($grey-7, 0.24), 0 2px 6px rgba($grey-7, 0.12);
   flex: 1;
   overflow-y: auto;
+
+  > h2,
+  > h3,
+  > h4,
+  > h5,
+  > h6 {
+    margin: 0 0 1em 10px;
+  }
+
+  h2 {
+    font-size: modular-scale(1);
+  }
 }
