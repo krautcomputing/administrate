@@ -21,7 +21,7 @@ to display a collection of resources in an HTML table.
 <table class="collection-data" aria-labelledby="page-title">
   <thead>
     <tr>
-      <th scope="col"></th>
+      <th class="cell-label" scope="col">Actions</th>
       <% collection_presenter.attribute_types.each do |attr_name, attr_type| %>
         <% ordered_html_class = collection_presenter.ordered_html_class(attr_name) %>
         <th class="cell-label
