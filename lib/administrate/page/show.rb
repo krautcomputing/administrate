@@ -19,6 +19,10 @@ module Administrate
           attribute_field(dashboard, resource, attr_name, :show)
         end
       end
+
+      def resource_actions
+        dashboard.resource_actions(resource)
+      end
     end
   end
 end

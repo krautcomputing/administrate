@@ -75,8 +75,13 @@ to display a collection of resources in an HTML table.
             method: :delete,
             data: { confirm: t("administrate.actions.confirm") }
           ) %>
-          <% collection_presenter.resource_actions(resource).each do |action| %>
-            <%= action %>
+          <% collection_presenter.resource_actions(resource).each do |name, url, html_options = {}| %>
+            <% html_options[:class] = html_options.fetch(:class, '').split(/\s+/).append('table__action').join(' ') %>
+            <% unless url.is_a?(String) %>
+              <% options = url.last.is_a?(Hash) ? url.pop : {} %>
+              <% url = polymorphic_path(url, options) %>
+            <% end %>
+            <%= link_to name, url, html_options %>
           <% end %>
         </td>
         <% collection_presenter.attributes_for(resource).each do |attribute| %>
