@@ -5,22 +5,42 @@ module Administrate
     end
 
     def render_field(field, locals = {})
-      locals.merge!(field: field)
-      # Look up both the resource's class as well as it's base class (when STI is used).
-      resource_classes = [field.resource.class, field.resource.class.base_class].uniq
-      partial_candidates = resource_classes.map do |klass|
-        "admin/#{klass.to_s.underscore.pluralize}/fields/#{field.attribute}/#{field.page}"
-      end + [
-        "admin/fields/#{field.class.field_type}/#{field.page}",
-        "fields/#{field.class.field_type}/#{field.page}"
-      ]
-      partial = partial_candidates.detect do |partial_candidate|
-        lookup_context.exists? partial_candidate, [], true
+      render partial: field_partial(field), locals: locals.merge(field: field)
+    end
+
+    def field_partial(field)
+      @field_partials ||= {}
+      @field_partials[field.name] ||= begin
+        # Look up both the resource's class as well as it's base class (when STI is used).
+        resource_classes = [field.resource.class, field.resource.class.base_class].uniq
+        partial_candidates = resource_classes.map do |klass|
+          "admin/#{klass.to_s.underscore.pluralize}/fields/#{field.attribute}/#{field.page}"
+        end + [
+          "admin/fields/#{field.class.field_type}/#{field.page}",
+          "fields/#{field.class.field_type}/#{field.page}"
+        ]
+        partial = partial_candidates.detect do |partial_candidate|
+          lookup_context.exists? partial_candidate, [], true
+        end
+        unless partial
+          fail "Could not find partial for field #{field}."
+        end
+        partial
       end
-      unless partial
-        fail "Could not find partial for field #{field}."
+    end
+
+    def cache_key(resource, attributes)
+      attribute_keys = attributes.map do |attribute|
+        partial = field_partial(attribute)
+        partial_digest = ActionView::Digestor.digest(name: partial, finder: lookup_context, partial: true)
+        [
+          attribute.name,
+          attribute.html_class,
+          partial,
+          partial_digest
+        ]
       end
-      render locals: locals, partial: partial
+      [resource, *attribute_keys]
     end
 
     def display_resource_name(resource_name)

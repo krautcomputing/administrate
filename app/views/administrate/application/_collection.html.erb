@@ -84,12 +84,15 @@ to display a collection of resources in an HTML table.
             <%= link_to name, url, html_options %>
           <% end %>
         </td>
-        <% collection_presenter.attributes_for(resource).each do |attribute| %>
-          <td class="cell-data
-                     cell-data--<%= attribute.name.dasherize %>
-                     cell-data--<%= attribute.html_class %>">
-            <%= render_field attribute %>
-          </td>
+        <% attributes = collection_presenter.attributes_for(resource) %>
+        <% cache cache_key(resource, attributes) do %>
+          <% attributes.each do |attribute| %>
+            <td class="cell-data
+                       cell-data--<%= attribute.name.dasherize %>
+                       cell-data--<%= attribute.html_class %>">
+              <%= render_field attribute %>
+            </td>
+          <% end %>
         <% end %>
       </tr>
     <% end %>
