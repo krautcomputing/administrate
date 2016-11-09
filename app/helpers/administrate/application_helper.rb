@@ -8,6 +8,13 @@ module Administrate
       render partial: field_partial(field), locals: locals.merge(field: field)
     end
 
+    def render_custom_fields(resource, locals = {})
+      partial = "admin/#{resource.class.to_s.underscore.pluralize}/custom_fields"
+      if lookup_context.exists?(partial, [], true)
+        render partial: partial, locals: locals
+      end
+    end
+
     def field_partial(field)
       @field_partials ||= {}
       @field_partials[field.name] ||= begin
