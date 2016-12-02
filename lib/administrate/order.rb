@@ -6,6 +6,8 @@ module Administrate
     end
 
     def apply(relation)
+      return relation if attribute.nil?
+
       case
       when relation.columns_hash.key?(attribute.to_s)
         relation.order(attribute => direction)
