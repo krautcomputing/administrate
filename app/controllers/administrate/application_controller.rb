@@ -82,8 +82,15 @@ module Administrate
       params[:per_page] || 20
     end
 
+    def default_order
+    end
+
+    def default_direction
+    end
+
     def order
-      @_order ||= Administrate::Order.new(params[:order], params[:direction])
+      @_order ||= Administrate::Order.new(params[:order]     || default_order,
+                                          params[:direction] || default_direction)
     end
 
     def dashboard
