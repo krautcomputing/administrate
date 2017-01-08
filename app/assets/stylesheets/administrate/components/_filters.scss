@@ -1,0 +1,52 @@
+#new-filter {
+  display: flex;
+
+  .new_filter {
+    white-space: nowrap;
+
+    > * {
+      vertical-align: top;
+    }
+
+    .filter-key {
+      display: inline-block;
+      min-width: 120px;
+    }
+
+    .filter-values,
+    input[type="submit"] {
+      display: none;
+    }
+
+    .filter-values {
+      min-width: 100px;
+    }
+  }
+
+  .clear-search {
+    margin-left: 20px;
+  }
+
+  .new_search {
+    flex-grow: 1;
+    border-bottom: $base-border;
+
+    input[type="text"] {
+      border: 0;
+      padding: 0 $small-spacing;
+      line-height: 3;
+    }
+  }
+}
+
+#existing-filters {
+  margin-top: 10px;
+
+  li {
+    display: inline-block;
+    border: 1px solid gray;
+    border-radius: 3px;
+    padding: 5px 10px;
+    margin-right: 5px;
+  }
+}

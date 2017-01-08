@@ -3,8 +3,7 @@ module Administrate
     protect_from_forgery with: :exception
 
     def index
-      search_term = params[:search].to_s.strip
-      resources = Administrate::Search.new(resource_resolver, search_term).run
+      resources = Filter.apply(resource_resolver, filters)
       resources = order.apply(resources)
       resources = customize_resource_fetching(resources)
       resources = resources.page(params[:page]).per(records_per_page)
@@ -12,8 +11,7 @@ module Administrate
 
       render locals: {
         resources: resources,
-        search_term: search_term,
-        page: page,
+        page:      page
       }
     end
 
@@ -69,6 +67,12 @@ module Administrate
 
     private
 
+    helper_method def filters
+      Hash(params[:filters]).map do |key, value|
+        Filter::Finder.new(resource_resolver, key).find_and_assign_value(value)
+      end
+    end
+
     helper_method :nav_link_state
     def nav_link_state(resource)
       if resource_name.to_s.pluralize == resource.to_s
@@ -93,7 +97,7 @@ module Administrate
                                           params[:direction] || default_direction)
     end
 
-    def dashboard
+    helper_method def dashboard
       @_dashboard ||= resource_resolver.dashboard_class.new
     end
 

@@ -32,7 +32,7 @@ By default, it renders:
     </div>
 
     <main class="main-content" role="main">
-      <%= content_for(:search) %>
+      <%= content_for :filters %>
       <%= render "flashes" -%>
       <%= yield %>
     </main>

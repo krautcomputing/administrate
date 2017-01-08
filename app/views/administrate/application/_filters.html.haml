@@ -1,0 +1,33 @@
+- all_filters = Administrate::Filter.all(dashboard)
+
+#new-filter
+
+  - if all_filters.size > 1
+    = form_for Administrate::Filter.new do |f|
+      .filter-key
+        = f.select :key, options_for_select(all_filters.map { |filter| [filter.label, filter.key] }), prompt: 'Select filter...'
+      - all_filters.each do |filter|
+        - next if filter.key == :search
+        .filter-values{ id: "filter-values-#{filter.key}" }
+          - case filter.kind
+          - when :select_one, :select_multiple
+            - multiple_param = filter.kind == :select_multiple ? { multiple: true } : {} # `multiple: false` doesn't work
+            = f.select :value, options_for_select(filter.values.map { |filter_value| [filter_value.label, filter_value.key] }), {}, multiple_param
+          - else
+            - fail "Unexpected filter kind: #{filter.kind}"
+      = f.submit 'Apply'
+
+  - search_filter = [*filters, *all_filters].detect { |filter| filter.key == :search }
+  - if search_filter.value.to_s.present?
+    = link_to 'Clear search'.html_safe, filter_path(search_filter.key), method: :delete, class: 'button clear-search'
+  = form_for search_filter, html: { class: 'new_search', id: 'new_search' } do |f|
+    = f.hidden_field :key, value: 'search'
+    = f.text_field :value, placeholder: 'Search'
+
+- existing_filters = filters.reject { |filter| filter.key == :search }
+- if existing_filters.any?
+  %ul#existing-filters
+    - existing_filters.each do |filter|
+      %li
+        == #{filter.label}: #{Array(filter.value).join(', ')}
+        = link_to '&times;'.html_safe, filter_path(filter.key), method: :delete

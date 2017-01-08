@@ -83,6 +83,10 @@ module Administrate
       []
     end
 
+    def filters
+      {}
+    end
+
     private
 
     def attribute_not_found_message(attr)

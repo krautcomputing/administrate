@@ -13,6 +13,7 @@ gem "markdown-rails"
 gem "pg"
 gem "redcarpet"
 gem "unicorn"
+gem "addressable"
 
 group :development do
   gem "web-console", ">= 2.1.3"

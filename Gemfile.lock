@@ -295,6 +295,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  addressable
   administrate!
   administrate-field-image!
   ammeter
