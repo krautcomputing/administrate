@@ -1,18 +1,18 @@
 - all_filters = Administrate::Filter.all(dashboard)
+- all_filters_except_search = all_filters.reject { |filter| filter.key == :search }
 
 #new-filter
 
-  - if all_filters.size > 1
+  - if all_filters_except_search.any?
     = form_for Administrate::Filter.new do |f|
       .filter-key
-        = f.select :key, options_for_select(all_filters.map { |filter| [filter.label, filter.key] }), prompt: 'Select filter...'
-      - all_filters.each do |filter|
-        - next if filter.key == :search
+        = f.select :key, options_for_select(all_filters_except_search.map { |filter| [filter.label, filter.key] }), { prompt: 'Select filter...' }
+      - all_filters_except_search.each do |filter|
         .filter-values{ id: "filter-values-#{filter.key}" }
           - case filter.kind
           - when :select_one, :select_multiple
             - multiple_param = filter.kind == :select_multiple ? { multiple: true } : {} # `multiple: false` doesn't work
-            = f.select :value, options_for_select(filter.values.map { |filter_value| [filter_value.label, filter_value.key] }), {}, multiple_param
+            = f.select :value, options_for_select(filter.values.map { |filter_value| [filter_value.label.is_a?(Proc) ? filter_value.label.call : filter_value.label, filter_value.key] }), {}, multiple_param
           - else
             - fail "Unexpected filter kind: #{filter.kind}"
       = f.submit 'Apply'

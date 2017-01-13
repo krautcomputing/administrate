@@ -70,7 +70,14 @@ module Administrate
         Value.new(key: @value || '', label: @value || '')
       else
         value_array = Array(@value).map do |value|
-          Value.new(key: value, label: values.detect { |v| v.key == value }.label)
+          value_from_values = values.detect do |v|
+            if v.key.is_a?(Proc)
+              v.key.call(value)
+            else
+              v.key == value
+            end
+          end
+          Value.new(key: value, label: value_from_values.label)
         end
         if @value.is_a?(Array)
           value_array
@@ -86,7 +93,11 @@ module Administrate
       attr_accessor :key, :label
 
       def to_s
-        label
+        if label.is_a?(Proc)
+          label.call(key)
+        else
+          label
+        end
       end
     end
 
