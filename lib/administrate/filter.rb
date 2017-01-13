@@ -19,7 +19,8 @@ module Administrate
           new(key:    key,
               label:  details[:label] || key.to_s.humanize,
               kind:   details.fetch(:kind),
-              values: values
+              values: values,
+              action: details[:action]
           )
         end.unshift(new(key: :search))
       end
