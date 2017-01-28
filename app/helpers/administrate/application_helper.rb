@@ -23,6 +23,7 @@ module Administrate
         partial_candidates = resource_classes.map do |klass|
           "admin/#{klass.to_s.underscore.pluralize}/fields/#{field.attribute}/#{field.page}"
         end + [
+          "admin/fields/#{field.attribute}/#{field.page}",
           "admin/fields/#{field.class.field_type}/#{field.page}",
           "fields/#{field.class.field_type}/#{field.page}"
         ]
