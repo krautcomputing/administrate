@@ -34,7 +34,7 @@ module Administrate
     end
 
     def create
-      if new_resource.save
+      if save_resource_on_create(new_resource)
         redirect_to(
           after_create_path,
           notice: translate_with_resource("create.success"),
@@ -47,7 +47,8 @@ module Administrate
     end
 
     def update
-      if requested_resource.update(resource_params)
+      requested_resource.attributes = resource_params
+      if save_resource_on_update(requested_resource)
         redirect_to(
           [namespace, requested_resource],
           notice: translate_with_resource("update.success"),
@@ -131,6 +132,18 @@ module Administrate
 
     def find_resource(param)
       resource_class.find(param)
+    end
+
+    def save_resource_on_create(resource)
+      save_resource(resource)
+    end
+
+    def save_resource_on_update(resource)
+      save_resource(resource)
+    end
+
+    def save_resource(resource)
+      resource.save
     end
 
     def resource_params
