@@ -83,6 +83,12 @@ module Administrate
       []
     end
 
+    # Override this method in your dashboard
+    # to add custom collection actions.
+    def collection_actions
+      []
+    end
+
     def filters
       {}
     end
