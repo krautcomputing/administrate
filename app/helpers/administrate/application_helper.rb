@@ -8,11 +8,19 @@ module Administrate
       render partial: field_partial(field), locals: locals.merge(field: field)
     end
 
-    def render_custom_fields(resource, locals = {})
-      partial = "admin/#{resource.class.to_s.underscore.pluralize}/custom_fields"
-      if lookup_context.exists?(partial, [], true)
-        render partial: partial, locals: locals
+    def render_custom_fields(resource, action, locals = {})
+      case action
+      when 'create' then action = 'new'
+      when 'update' then action = 'edit'
       end
+      %W(
+        admin/#{resource.class.to_s.underscore.pluralize}/custom_fields_for_#{action}
+        admin/#{resource.class.to_s.underscore.pluralize}/custom_fields
+      ).map do |partial|
+        if lookup_context.exists?(partial, [], true)
+          render partial: partial, locals: locals
+        end
+      end.compact.join.html_safe
     end
 
     def field_partial(field)

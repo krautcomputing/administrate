@@ -39,7 +39,7 @@ and renders all form fields for a resource's editable attributes.
     </div>
   <% end -%>
 
-  <%= render_custom_fields page.resource, f: f %>
+  <%= render_custom_fields page.resource, params[:action], f: f %>
 
   <% if page.hidden_fields.present? %>
     <% page.hidden_fields.each do |k, v| %>
