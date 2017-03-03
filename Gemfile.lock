@@ -225,6 +225,7 @@ GEM
     rake (11.3.0)
     rdiscount (1.6.8)
     redcarpet (3.3.4)
+    refills (0.2.0)
     rspec-core (3.5.4)
       rspec-support (~> 3.5.0)
     rspec-expectations (3.5.0)
@@ -323,6 +324,7 @@ DEPENDENCIES
   rack-timeout
   rails_stdout_logging
   redcarpet
+  refills
   rspec-rails (~> 3.5.0)
   shoulda-matchers (~> 2.8.0)
   timecop
