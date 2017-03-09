@@ -35,35 +35,55 @@ module Administrate
 
     def create
       if save_resource_on_create(new_resource)
-        redirect_to(
-          after_create_path,
-          notice: translate_with_resource("create.success"),
-        )
+        if request.xhr?
+          head :ok
+        else
+          redirect_to(
+            after_create_path,
+            notice: translate_with_resource("create.success"),
+          )
+        end
       else
-        render :new, locals: {
-          page: create_form
-        }
+        if request.xhr?
+          head :unprocessable_entity
+        else
+          render :new, locals: {
+            page: create_form
+          }
+        end
       end
     end
 
     def update
       requested_resource.attributes = resource_params
       if save_resource_on_update(requested_resource)
-        redirect_to(
-          [namespace, requested_resource],
-          notice: translate_with_resource("update.success"),
-        )
+        if request.xhr?
+          head :ok
+        else
+          redirect_to(
+            [namespace, requested_resource],
+            notice: translate_with_resource("update.success"),
+          )
+        end
       else
-        render :edit, locals: {
-          page: edit_page
-        }
+        if request.xhr?
+          head :unprocessable_entity
+        else
+          render :edit, locals: {
+            page: edit_page
+          }
+        end
       end
     end
 
     def destroy
       requested_resource.destroy
-      flash[:notice] = translate_with_resource("destroy.success")
-      redirect_to action: :index
+      if request.xhr?
+        head :ok
+      else
+        flash[:notice] = translate_with_resource("destroy.success")
+        redirect_to action: :index
+      end
     end
 
     private
