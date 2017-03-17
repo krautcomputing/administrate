@@ -1,5 +1,7 @@
 module Administrate
   module ApplicationHelper
+    PLURAL_MANY_COUNT = 2.1
+
     def page_html_class
       "#{params[:controller].split('/').last} #{params[:action]}"
     end
@@ -66,7 +68,7 @@ module Administrate
         constantize.
         model_name.
         human(
-          count: 0,
+          count: PLURAL_MANY_COUNT,
           default: resource_name.to_s.pluralize.titleize,
         )
     end
