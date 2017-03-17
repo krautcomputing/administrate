@@ -41,7 +41,7 @@ module Administrate
             default_filter_action.call(relation, filter.key, filter.value)
           end
         end
-        relation
+        relation.distinct
       end
     end
 
