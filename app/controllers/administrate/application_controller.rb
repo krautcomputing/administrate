@@ -4,6 +4,7 @@ module Administrate
 
     def index
       resources = Filter.apply(resource_resolver, filters)
+      resources = resources.includes(*resource_includes) if resource_includes.any?
       resources = order.apply(resources)
       resources = customize_resource_fetching(resources)
       resources = resources.page(params[:page]).per(records_per_page)
@@ -95,11 +96,7 @@ module Administrate
     end
 
     helper_method def nav_link_state(resource)
-      if resource_name.to_s.pluralize == resource.to_s
-        :active
-      else
-        :inactive
-      end
+      resource_name.to_s.pluralize == resource.to_s ? :active : :inactive
     end
 
     def records_per_page
@@ -163,6 +160,18 @@ module Administrate
 
     def save_resource(resource)
       resource.save
+    end
+
+    def resource_includes
+      association_classes = [
+        Administrate::Field::HasMany, Administrate::Field::HasOne,
+        Administrate::Field::BelongsTo
+      ]
+
+      dashboard.class::ATTRIBUTE_TYPES.map do |key, value|
+        key if association_classes.include?(value) ||
+               association_classes.include?(value.try :deferred_class)
+      end.compact
     end
 
     def resource_params
