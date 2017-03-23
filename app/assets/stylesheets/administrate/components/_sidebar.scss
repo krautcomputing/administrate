@@ -2,7 +2,17 @@
   flex: 0 0 auto;
   max-width: 12em;
   overflow-y: auto;
-  padding: 0 $base-spacing $base-spacing;
+}
+
+.sidebar_dev_env {
+  padding: 10px 0;
+  text-align: center;
+  color: white;
+  background-color: green;
+}
+
+.sidebar__list {
+  margin: 0 $base-spacing $base-spacing;
 }
 
 .sidebar__link {

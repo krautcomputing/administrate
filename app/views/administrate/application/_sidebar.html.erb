@@ -7,6 +7,12 @@ for all resources in the admin dashboard,
 as defined by the routes in the `admin/` namespace
 %>
 
+<% if Rails.env.development? %>
+  <div class="sidebar_dev_env">
+    DEVELOPMENT
+  </div>
+<% end %>
+
 <ul class="sidebar__list">
   <% ns = Administrate::Namespace.new(namespace) %>
   <% if ns.namespace_controller_paths.include?('admin/dashboards') %>
