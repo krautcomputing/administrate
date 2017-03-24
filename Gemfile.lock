@@ -5,7 +5,7 @@ PATH
       autoprefixer-rails (~> 6.0)
       bourbon (>= 5.0.0.beta.6)
       datetime_picker_rails (~> 0.0.7)
-      jquery-rails (~> 4.0)
+      jquery-rails (>= 4.0)
       kaminari (~> 1.0)
       momentjs-rails (~> 2.8)
       neat (~> 1.1)
