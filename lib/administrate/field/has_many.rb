@@ -47,8 +47,10 @@ module Administrate
       private
 
       def candidate_resources
-        if options.key?(:includes)
-          includes = options.fetch(:includes)
+        case
+        when candidate_resources = options[:candidate_resources]
+          candidate_resources.call resource
+        when includes = options[:includes]
           associated_class.includes(*includes).all
         else
           associated_class.all
