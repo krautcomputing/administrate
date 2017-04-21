@@ -4,7 +4,7 @@ gemspec
 
 gem "administrate-field-image"
 gem "autoprefixer-rails"
-gem "bourbon", "~> 5.0.0.beta.7"
+gem "bourbon", "~> 4.3"
 gem "delayed_job_active_record"
 gem "faker"
 gem "high_voltage"
