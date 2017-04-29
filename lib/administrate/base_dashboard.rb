@@ -93,6 +93,17 @@ module Administrate
       {}
     end
 
+    def association_includes
+      association_classes = [Field::HasMany, Field::HasOne, Field::BelongsTo]
+
+      collection_attributes.map do |key|
+        field = self.class::ATTRIBUTE_TYPES[key]
+
+        next key if association_classes.include?(field)
+        key if association_classes.include?(field.try :deferred_class)
+      end.compact
+    end
+
     private
 
     def attribute_not_found_message(attr)
