@@ -21,4 +21,8 @@ class Resource
   def path
     name.to_s.gsub("/", "_")
   end
+
+  def exists?
+    !!to_s.classify.safe_constantize
+  end
 end

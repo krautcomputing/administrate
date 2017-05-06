@@ -7,7 +7,7 @@ module Administrate
     def resources
       namespace_controller_paths.uniq.map do |path|
         Resource.new(namespace, path)
-      end
+      end.select(&:exists?)
     end
 
     def namespace_controller_paths
