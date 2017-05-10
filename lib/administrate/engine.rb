@@ -29,7 +29,6 @@ module Administrate
     @@stylesheets = []
 
     Engine.config.assets.precompile << %w(
-      administrate/dropdown.svg
       administrate/sort_arrow.svg
     )
 
