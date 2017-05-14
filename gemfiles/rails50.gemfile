@@ -3,19 +3,21 @@
 source "https://rubygems.org"
 
 gem "administrate-field-image"
-gem "bourbon", "~> 5.0.0.beta.7"
+gem "autoprefixer-rails"
+gem "bourbon", "~> 4.3"
 gem "delayed_job_active_record"
 gem "faker"
 gem "pg"
 gem "redcarpet"
 gem "unicorn"
+gem "addressable"
 gem "rails", "~> 5.0.0"
 gem "rails-controller-testing"
 
 group :development, :test do
   gem "appraisal"
   gem "awesome_print"
-  gem "bundler-audit", :require => false
+  gem "bundler-audit", require: false
   gem "byebug"
   gem "dotenv-rails"
   gem "factory_girl_rails"
@@ -30,7 +32,7 @@ group :test do
   gem "formulaic"
   gem "launchy"
   gem "poltergeist"
-  gem "shoulda-matchers", "~> 2.8.0", :require => false
+  gem "shoulda-matchers", "~> 2.8.0", require: false
   gem "timecop"
   gem "webmock"
 end
@@ -41,4 +43,4 @@ group :staging, :production do
   gem "uglifier"
 end
 
-gemspec :path => "../"
+gemspec path: "../"

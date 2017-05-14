@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile"]
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency "autoprefixer-rails", "~> 6.0"
+  s.add_dependency "autoprefixer-rails", "~> 7.0"
   s.add_dependency "bourbon", "~> 4.3"
   s.add_dependency "datetime_picker_rails", "~> 0.0.7"
   s.add_dependency "jquery-rails", ">= 4.0"
