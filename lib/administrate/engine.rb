@@ -28,10 +28,6 @@ module Administrate
     @@javascripts = []
     @@stylesheets = []
 
-    Engine.config.assets.precompile << %w(
-      administrate/sort_arrow.svg
-    )
-
     def self.add_javascript(script)
       @@javascripts << script
     end
