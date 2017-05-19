@@ -14,6 +14,10 @@ Gem::Specification.new do |s|
   s.files = Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile"]
   s.test_files = Dir["test/**/*"]
 
+  s.add_dependency "actionpack", ">= 4.2", "< 5.2"
+  s.add_dependency "actionview", ">= 4.2", "< 5.2"
+  s.add_dependency "activerecord", ">= 4.2", "< 5.2"
+
   s.add_dependency "autoprefixer-rails", "~> 7.0"
   s.add_dependency "bourbon", "~> 4.3"
   s.add_dependency "datetime_picker_rails", "~> 0.0.7"
