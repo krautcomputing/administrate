@@ -33,6 +33,7 @@ It renders the `_table` partial to display details about the resources.
   <h1 class="header__heading" id="page-title"><%= content_for(:title) %></h1>
   <div class="header__info">
     <%= page_entries_info resources %>
+    <%= paginate resources %>
   </div>
   <div class="header__actions">
     <%= link_to(
@@ -52,9 +53,3 @@ It renders the `_table` partial to display details about the resources.
 </header>
 
 <%= render "collection", collection_presenter: page, resources: resources %>
-
-<div class="pagination-info">
-  <%= page_entries_info resources %>
-</div>
-
-<%= paginate resources %>

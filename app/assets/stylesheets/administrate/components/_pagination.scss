@@ -1,11 +1,7 @@
-.pagination-info {
-  text-align: center;
-  margin: 1.5em 0;
-}
-
 .pagination {
-  @include margin($base-spacing null ($base-spacing * 4));
+  @include margin(($base-spacing * 0.5) null 0);
   @include padding(null $base-spacing);
+
   text-align: center;
 
   .first,

@@ -2,12 +2,16 @@
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
-  padding: $base-spacing;
+  padding: ($base-spacing * 0.5) ($base-spacing * 0.5) 0;
 }
 
 .header__heading {
   font-size: modular-scale(3);
   margin-top: 0;
+}
+
+.header__info {
+  text-align: center;
 }
 
 .header__actions {
