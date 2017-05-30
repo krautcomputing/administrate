@@ -13,6 +13,16 @@ $('select#filter_key').on 'change', ->
     selectize.enable()
     selectize.focus()
 
-$(document).on 'keyup', (e) ->
-  if e.which == 70 && !$(e.target).is('input, textarea')
-    $('#filter_key').get(0).selectize.focus()
+$(document).keypress (e) ->
+  if !$(e.target).is('input, textarea')
+    switch e.which
+      when 102
+        $filter = $('#filter_key')
+        if $filter.length
+          e.preventDefault()
+          $filter.get(0).selectize.focus()
+      when 115
+        $search = $('#search_filter_value')
+        if $search.length
+          e.preventDefault()
+          $search.focus()

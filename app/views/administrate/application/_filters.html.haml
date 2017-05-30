@@ -21,8 +21,8 @@
   - if search_filter.value.to_s.present?
     = link_to 'Clear search'.html_safe, filter_path(search_filter.key), method: :delete, class: 'button clear-search'
   = form_for search_filter, html: { class: 'new_search', id: 'new_search' } do |f|
-    = f.hidden_field :key, value: 'search'
-    = f.text_field :value, placeholder: 'Search'
+    = f.hidden_field :key, value: 'search', id: 'search_filter_key'
+    = f.text_field :value, placeholder: 'Search', id: 'search_filter_value'
 
 - existing_filters = filters.reject { |filter| filter.key == :search }
 - if existing_filters.any?
