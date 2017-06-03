@@ -1,4 +1,5 @@
 require "turbolinks"
+require "rails-assets-jquery.floatThead"
 require "datetime_picker_rails"
 require "jquery-rails"
 require "kaminari"

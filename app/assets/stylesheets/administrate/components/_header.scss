@@ -2,7 +2,11 @@
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
-  padding: ($base-spacing * 0.5) ($base-spacing * 0.5) 0;
+  padding: $base-spacing;
+
+  body.index & {
+    padding: ($base-spacing * 0.5) ($base-spacing * 0.5) 0;
+  }
 }
 
 .header__heading {

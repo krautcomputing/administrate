@@ -3,6 +3,10 @@ table {
   width: 100%;
 }
 
+thead {
+  background-color: white;
+}
+
 th {
   border-bottom: 1px solid shade($base-border-color, 25%);
   text-align: left;
