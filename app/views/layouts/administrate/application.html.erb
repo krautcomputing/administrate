@@ -19,12 +19,12 @@ By default, it renders:
   <meta name="ROBOTS" content="NOODP" />
   <meta name="viewport" content="initial-scale=1" />
   <title><%= content_for(:title) %> | <%= Rails.application.class.parent_name.titlecase %></title>
-  <%= render "stylesheet" %>
   <%= csrf_meta_tags %>
+  <%= render "stylesheet" %>
+  <%= render "javascript" %>
 </head>
 
-<body class="<%= page_html_class -%>">
-
+<body class="<%= page_html_class %>">
   <div class="app-container">
 
     <div class="sidebar">
@@ -38,7 +38,5 @@ By default, it renders:
     </main>
 
   </div>
-
-  <%= render "javascript" %>
 </body>
 </html>

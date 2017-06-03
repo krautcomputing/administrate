@@ -1,4 +1,4 @@
-$('select#filter_key').on 'change', ->
+$(document).on 'change', 'select#filter_key', ->
   $('.filter-values').hide()
                      .find('input, select')
                      .prop('disabled', true)
