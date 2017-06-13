@@ -37,4 +37,13 @@ FactoryGirl.define do
     image_url \
       "https://cdn.recombu.com/mobile/images/news/M11370/1264769196_w670.jpg"
   end
+
+  factory :payment do
+    order
+  end
+
+  factory :blog_post, class: "Blog::Post" do
+    sequence(:title) { |n| "Post #{n}" }
+    body "Empty"
+  end
 end

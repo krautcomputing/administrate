@@ -98,6 +98,12 @@ module Administrate
       resource_name.to_s.pluralize == resource.to_s ? :active : :inactive
     end
 
+    helper_method def valid_action?(name, resource = resource_class)
+      !!routes.detect do |controller, action|
+        controller == resource.to_s.underscore.pluralize && action == name.to_s
+      end
+    end
+
     def records_per_page
       params[:per_page] || 20
     end
@@ -166,7 +172,7 @@ module Administrate
     end
 
     def resource_params
-      params.require(resource_name).permit(*permitted_attributes)
+      params.require(resource_class.model_name.param_key).permit(*permitted_attributes)
     end
 
     def permitted_attributes

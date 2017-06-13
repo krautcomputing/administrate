@@ -5,6 +5,10 @@ Rails.application.routes.draw do
     resources :orders
     resources :products
 
+    namespace :blog do
+      resources :posts
+    end
+
     root to: "customers#index"
   end
 
