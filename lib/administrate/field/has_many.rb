@@ -52,21 +52,6 @@ module Administrate
         associated_dashboard.association_includes
       end
 
-      def candidate_resources
-        case
-        when candidate_resources = options[:candidate_resources]
-          candidate_resources.call resource
-        when includes = options[:includes]
-          associated_class.includes(*includes).all
-        else
-          associated_class.all
-        end
-      end
-
-      def display_candidate_resource(resource)
-        associated_dashboard.try(:display_resource, resource) || resource.to_s
-      end
-
       def order
         @_order ||= Administrate::Order.new(sort_by, direction)
       end

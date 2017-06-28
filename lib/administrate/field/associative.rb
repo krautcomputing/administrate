@@ -21,6 +21,25 @@ module Administrate
         options.fetch(:class_name, attribute.to_s.singularize.camelcase)
       end
 
+      def candidate_resources
+        case
+        when custom_candidate_resources = options[:candidate_resources]
+          custom_candidate_resources.call resource
+        when includes = options[:includes]
+          associated_class.includes(*includes).all
+        else
+          associated_class.all
+        end
+      end
+
+      def display_candidate_resource(resource)
+        if custom_display_candidate_resource = options[:display_candidate_resource]
+          custom_display_candidate_resource.call resource
+        else
+          associated_dashboard.try(:display_resource, resource) || resource.to_s
+        end
+      end
+
       def primary_key
         options.fetch(:primary_key, :id)
       end
