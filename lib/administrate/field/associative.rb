@@ -4,7 +4,7 @@ module Administrate
   module Field
     class Associative < Base
       def display_associated_resource
-        associated_dashboard.display_resource(data)
+        display_candidate_resource data
       end
 
       protected
@@ -36,7 +36,7 @@ module Administrate
         if custom_display_candidate_resource = options[:display_candidate_resource]
           custom_display_candidate_resource.call resource
         else
-          associated_dashboard.try(:display_resource, resource) || resource.to_s
+          associated_dashboard.display_resource resource
         end
       end
 
