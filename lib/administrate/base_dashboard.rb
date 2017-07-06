@@ -96,12 +96,11 @@ module Administrate
     def association_includes
       association_classes = [Field::HasMany, Field::HasOne, Field::BelongsTo]
 
-      collection_attributes.map do |key|
-        field = self.class::ATTRIBUTE_TYPES[key]
-
-        next key if association_classes.include?(field)
-        key if association_classes.include?(field.try :deferred_class)
-      end.compact
+      collection_attributes.select do |key|
+        field = attribute_types[key]
+        next if field.respond_to?(:options) && field.options.key?(:include) && !field.options[:include]
+        association_classes.include?(field) || (field.respond_to?(:deferred_class) && association_classes.include?(field.deferred_class))
+      end
     end
 
     private
