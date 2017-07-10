@@ -6,7 +6,6 @@ module Administrate
       resources = Filter.apply(resource_resolver, filters)
       resources = resources.includes(*resource_includes) if resource_includes.any?
       resources = order.apply(resources)
-      resources = customize_resource_fetching(resources)
       resources = resources.page(params[:page]).per(records_per_page)
       page = Administrate::Page::Collection.new(dashboard, order: order)
 
@@ -188,12 +187,6 @@ module Administrate
         "administrate.controller.#{key}",
         resource: resource_resolver.resource_title,
       )
-    end
-
-    # Override this method in your resource controller
-    # to apply `includes` or `eager_load`
-    def customize_resource_fetching(resources)
-      resources
     end
 
     # Override this method in your resource controller
