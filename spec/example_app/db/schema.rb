@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160119024340) do
+ActiveRecord::Schema.define(version: 20170508183744) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -39,13 +39,26 @@ ActiveRecord::Schema.define(version: 20160119024340) do
     t.datetime "updated_at"
   end
 
-  add_index "delayed_jobs", ["priority", "run_at"], name: "delayed_jobs_priority", using: :btree
+  create_table "delayed_jobs", id: :serial, force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
+  end
 
-  create_table "line_items", force: :cascade do |t|
-    t.integer  "order_id"
-    t.integer  "product_id"
-    t.float    "unit_price"
-    t.integer  "quantity"
+  create_table "line_items", id: :serial, force: :cascade do |t|
+    t.integer "order_id"
+    t.integer "product_id"
+    t.float "unit_price"
+    t.integer "quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -67,14 +80,23 @@ ActiveRecord::Schema.define(version: 20160119024340) do
 
   add_index "orders", ["customer_id"], name: "index_orders_on_customer_id", using: :btree
 
-  create_table "products", force: :cascade do |t|
-    t.string   "name"
-    t.float    "price"
-    t.text     "description"
-    t.string   "image_url"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
-    t.string   "slug",        null: false
+  create_table "product_meta_tags", id: :serial, force: :cascade do |t|
+    t.integer "product_id"
+    t.string "meta_title", null: false
+    t.string "meta_description", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "products", id: :serial, force: :cascade do |t|
+    t.string "name"
+    t.float "price"
+    t.text "description"
+    t.string "image_url"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "slug", null: false
+    t.index ["slug"], name: "index_products_on_slug", unique: true
   end
 
   add_index "products", ["slug"], name: "index_products_on_slug", unique: true, using: :btree

@@ -17,3 +17,8 @@
   margin-bottom: $base-spacing;
   max-width: 800px;
 }
+
+.attribute--nested {
+  border: $base-border;
+  padding: $small-spacing;
+}
