@@ -61,16 +61,21 @@ module Administrate
       [resource, *attribute_keys]
     end
 
+    def class_from_resource(resource_name)
+      resource_name.to_s.classify.constantize
+    end
+
     def display_resource_name(resource_name)
-      resource_name.
-        to_s.
-        classify.
-        constantize.
+      class_from_resource(resource_name).
         model_name.
         human(
           count: PLURAL_MANY_COUNT,
           default: resource_name.to_s.pluralize.titleize,
         )
+    end
+
+    def resource_index_route_key(resource_name)
+      ActiveModel::Naming.route_key(class_from_resource(resource_name))
     end
 
     def sanitized_order_params
