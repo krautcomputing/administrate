@@ -11,9 +11,12 @@ Order.destroy_all
 Customer.destroy_all
 Product.destroy_all
 ProductMetaTag.destroy_all
+<<<<<<< HEAD
 Series.destroy_all
 Country.destroy_all
 LogEntry.destroy_all
+=======
+>>>>>>> 1b3eb93... Add HasOne support as nested form (#801)
 
 countries = Country.create! [
   { code: "US", name: "USA" },
@@ -50,7 +53,11 @@ product_attributes.each do |attributes|
     meta_title: Faker::LordOfTheRings.character,
     meta_description: Faker::LordOfTheRings.location,
   }
+<<<<<<< HEAD
   Product.create! attributes.merge(price: 20 + rand(50))
+=======
+  Product.create attributes.merge(price: 20 + rand(50))
+>>>>>>> 1b3eb93... Add HasOne support as nested form (#801)
 end
 
 customers.each do |customer|

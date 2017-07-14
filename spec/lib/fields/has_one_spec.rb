@@ -35,8 +35,14 @@ describe Administrate::Field::HasOne do
   describe "#to_partial_path" do
     it "returns a partial based on the page being rendered" do
       page = :show
+<<<<<<< HEAD
       owner = double
       field = Administrate::Field::HasOne.new(:owner, nil, owner, page)
+=======
+      product_meta_tag = double
+      field = Administrate::Field::HasOne.new(:product_meta_tag,
+        product_meta_tag, page)
+>>>>>>> 1b3eb93... Add HasOne support as nested form (#801)
 
       path = field.to_partial_path
 
