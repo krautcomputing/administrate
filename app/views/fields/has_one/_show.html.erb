@@ -23,7 +23,7 @@ All fields of has_one relationship would be rendered
         [namespace, field.data],
       ) %>
     </legend>
-    <% field.nested_form.attributes.each do |attribute| -%>
+    <% field.nested_form.attributes(params[:action]).each do |attribute| -%>
       <div>
       <dt class="attribute-label">
         <%= t(
