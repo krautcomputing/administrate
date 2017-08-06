@@ -2,12 +2,10 @@ require "rails_helper"
 require "administrate/field/has_one"
 
 describe "fields/has_one/_form", type: :view do
-  it "displays the resource name" do
+  it "displays the field name" do
     has_one = instance_double(
       "Administrate::Field::HasOne",
-      attribute: "Meta",
-      data: nil,
-      nested_form: nested_form,
+      attribute: "Commentable",
     )
 
     render(
@@ -15,25 +13,25 @@ describe "fields/has_one/_form", type: :view do
       locals: { field: has_one, f: form_builder },
     )
 
-    expect(rendered.strip).to include("Product Tag")
+    expect(rendered.strip).to include("Commentable")
+  end
+
+  it "does not display a form" do
+    has_one = instance_double(
+      "Administrate::Field::HasOne",
+      attribute: "Commentable",
+    )
+
+    render(
+      partial: "fields/has_one/form.html.erb",
+      locals: { field: has_one, f: form_builder },
+    )
+
+    expect(rendered).
+      to include(t("administrate.fields.has_one.not_supported"))
   end
 
   def form_builder
-    builder = double("Form Builder")
-    allow(builder).to receive(:fields_for) do |&block|
-      block.call(double("Fields For Form Builder"))
-    end
-    builder
-  end
-
-  def nested_form
-    instance_double(
-      "Administrate::Page::Show",
-      resource: double(
-        class: ProductMetaTag,
-      ),
-      attributes: [],
-      resource_name: "Product Tag",
-    )
+    double("Form Builder", label: "Commentable")
   end
 end
