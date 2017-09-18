@@ -70,14 +70,16 @@ module Administrate
           # Find only the IDs for each search relation and add them
           # as a condition part.
           search_relations.each do |search_relation|
-            resolver = Administrate::ResourceResolver.new("admin/#{search_relation.to_s.pluralize}")
-            search = self.class.new(resolver, @term, false)
+            search_relation_resolver = Administrate::ResourceResolver.new("admin/#{search_relation.to_s.pluralize}")
+            search = self.class.new(search_relation_resolver, @term, false)
             ids = search.run.ids
             if ids.any?
               condition_param = "#{search_relation}_ids".to_sym
-              condition_parts << "#{resolver.resource_class.table_name}.id IN (:#{condition_param})"
+              condition_parts << "#{search_relation_resolver.resource_class.table_name}.id IN (:#{condition_param})"
               condition_params[condition_param] = ids
-              relation.joins!(search_relation)
+              # TODO: In Rails 5, we can use #left_outer_joins
+              # http://blog.bigbinary.com/2016/03/24/support-for-left-outer-joins-in-rails-5.html
+              relation.joins!("LEFT OUTER JOIN #{search_relation_resolver.resource_class.table_name} ON #{resource_class.table_name}.id = #{search_relation_resolver.resource_class.table_name}.#{resource_class.reflections[search_relation.to_s].foreign_key}")
             end
           end
         end
