@@ -99,9 +99,13 @@ module Administrate
     end
 
     helper_method def valid_action?(name, resource = resource_class)
-      !!routes.detect do |controller, action|
-        controller == resource.to_s.underscore.pluralize && action == name.to_s
+      routes.any? do |controller, action|
+        controller == "#{namespace}/#{resource.to_s.underscore.pluralize}" && action == name.to_s
       end
+    end
+
+    def routes
+      @routes ||= Namespace.new(namespace).routes
     end
 
     def records_per_page

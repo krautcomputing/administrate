@@ -1,28 +1,28 @@
 module Administrate
   class Namespace
+    attr_reader :namespace
+
     def initialize(namespace)
       @namespace = namespace
     end
 
     def resources
-      namespace_controller_paths.uniq.map do |path|
+      @resources ||= routes.map(&:first).uniq.map do |path|
         Resource.new(namespace, path)
       end.select(&:exists?)
     end
 
-    def namespace_controller_paths
-      all_controller_paths.select do |controller|
+    def routes
+      @routes ||= all_routes.select do |controller, _|
         controller.starts_with?("#{namespace}/")
       end
     end
 
     private
 
-    attr_reader :namespace
-
-    def all_controller_paths
+    def all_routes
       Rails.application.routes.routes.map do |route|
-        route.defaults[:controller].to_s
+        route.defaults.values_at(:controller, :action).map(&:to_s)
       end
     end
   end

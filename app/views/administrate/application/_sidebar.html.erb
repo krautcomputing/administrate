@@ -15,7 +15,7 @@ as defined by the routes in the `admin/` namespace
 
 <ul class="sidebar__list">
   <% ns = Administrate::Namespace.new(namespace) %>
-  <% if ns.namespace_controller_paths.include?('admin/dashboards') %>
+  <% if ns.routes.map(&:first).include?("#{namespace}/dashboards") %>
     <li>
       <%= link_to(
         'Dashboard',
