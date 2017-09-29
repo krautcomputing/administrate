@@ -97,7 +97,7 @@ module Administrate
         if label.is_a?(Proc)
           label.call(key)
         else
-          label
+          label.to_s
         end
       end
     end
