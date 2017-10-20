@@ -1,7 +1,7 @@
 .field-unit {
   @include clearfix;
   @include fill-parent;
-  align-items: center;
+  align-items: flex-start;
   display: flex;
   margin-bottom: $base-spacing;
   position: relative;
@@ -10,6 +10,7 @@
 .field-unit__label {
   @include span-columns(2 of 12);
   text-align: right;
+  padding-top: 5px;
 }
 
 .field-unit__field {
