@@ -77,9 +77,27 @@ module Administrate
               condition_param = "#{search_relation}_ids".to_sym
               condition_parts << "#{search_relation_resolver.resource_class.table_name}.id IN (:#{condition_param})"
               condition_params[condition_param] = ids
+
+              # Let's see what kind of association we're dealing with.
+              field_class = if attribute_types[search_relation].is_a?(Administrate::Field::Deferred)
+                attribute_types[search_relation].deferred_class
+              else
+                attribute_types[search_relation].class
+              end
+              foreign_key = resource_class.reflections[search_relation.to_s].foreign_key
+              primary_key = 'id'
+              resource_column, search_resource_column = case field_class.to_s
+              when 'Administrate::Field::BelongsTo' then [foreign_key, primary_key]
+              when 'Administrate::Field::HasMany'   then [primary_key, foreign_key]
+              else fail "Unexpected field class: #{field_class}"
+              end
+
               # TODO: In Rails 5, we can use #left_outer_joins
               # http://blog.bigbinary.com/2016/03/24/support-for-left-outer-joins-in-rails-5.html
-              relation.joins!("LEFT OUTER JOIN #{search_relation_resolver.resource_class.table_name} ON #{resource_class.table_name}.id = #{search_relation_resolver.resource_class.table_name}.#{resource_class.reflections[search_relation.to_s].foreign_key}")
+              relation.joins!("
+                LEFT OUTER JOIN #{search_relation_resolver.resource_class.table_name}
+                  ON #{resource_class.table_name}.#{resource_column} =
+                     #{search_relation_resolver.resource_class.table_name}.#{search_resource_column}".gsub(/\s+/, ' '))
             end
           end
         end
