@@ -103,6 +103,46 @@ For example, you might use the following to display U.S. currency:
   )
 ```
 
+Or, to display a distance in kilometers:
+
+```ruby
+  unit_price: Field::Number.with_options(
+    suffix: " km",
+    decimals: 2,
+  )
+```
+
+**Field::Polymorphic**
+
+`:classes` - Specify a list of classes whose objects will be used to populate select boxes for editing this polymorphic field.
+Default is `[]`.
+
+**Field::Select**
+
+`:collection` - Specify the array or range to select from.  Defaults to `[]`.
+
+`:searchable` - Specify if the attribute should be considered when searching.
+Default is `true`.
+
+**Field::String**
+
+`:searchable` - Specify if the attribute should be considered when searching.
+Default is `true`.
+
+`:truncate` - Set the number of characters to display in the index view.
+Defaults to `50`.
+
+**Field::Text**
+
+`:searchable` - Specify if the attribute should be considered when searching.
+Default is `false`.
+
+`:truncate` - Set the number of characters to display in the index view.
+Defaults to `50`.
+
+### Defining Labels
+
+>>>>>>> 8329b21... Add support for editing polymorphic fields - Revisited (#1020)
 To change the user-facing label for an attribute,
 define a custom I18n translation:
 

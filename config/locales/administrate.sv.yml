@@ -17,7 +17,5 @@ sv:
       has_many:
         more: "%{count} av %{total_count}"
         none: Inga
-      polymorphic:
-        not_supported: Formulär med polymorfiska relationer stöds inte.
       has_one:
         not_supported: Formulär med HasOne relationer stöds inte.

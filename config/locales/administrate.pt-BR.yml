@@ -18,7 +18,10 @@ pt-BR:
       has_many:
         more: "Exibindo %{count} de %{total_count}"
         none: Nenhum
+<<<<<<< HEAD
       polymorphic:
         not_supported: Relações polimórmficas nos formulários não são suportadas.
+=======
+>>>>>>> 8329b21... Add support for editing polymorphic fields - Revisited (#1020)
       has_one:
         not_supported: Relações um para muitos nos formulários não são suportadas.

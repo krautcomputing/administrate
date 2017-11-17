@@ -176,7 +176,21 @@ module Administrate
     end
 
     def resource_params
-      params.require(resource_class.model_name.param_key).permit(*permitted_attributes)
+      params.require(resource_class.model_name.param_key).
+        permit(*permitted_attributes).
+        transform_values { |v| read_param_value(v) }
+    end
+
+    def read_param_value(data)
+      if data.is_a?(ActionController::Parameters) && data[:type]
+        if data[:type] == Administrate::Field::Polymorphic.to_s
+          GlobalID::Locator.locate(data[:value])
+        else
+          raise "Unrecognised param data: #{data.inspect}"
+        end
+      else
+        data
+      end
     end
 
     def permitted_attributes

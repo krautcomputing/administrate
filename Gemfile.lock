@@ -309,6 +309,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   formulaic
+  globalid
   i18n-tasks
   launchy
   pg
