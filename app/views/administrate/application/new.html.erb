@@ -24,4 +24,8 @@ to do the heavy lifting.
   </div>
 </header>
 
-<%= render 'form', page: page %>
+<% if @error %>
+  Error: <%= @error.html_safe %>
+<% else %>
+  <%= render 'form', page: page %>
+<% end %>
