@@ -60,19 +60,19 @@ to display a collection of resources in an HTML table.
               t("administrate.actions.show"),
               [namespace, resource],
               class: "table__action table__action--show"
-            ) if valid_action?(:show) %>
+            ) if valid_action?(:show) && show_action?(:show, resource) %>
             <%= link_to(
               t("administrate.actions.edit"),
               [:edit, namespace, resource],
               class: "table__action table__action--edit"
-            ) if valid_action?(:edit) %>
+            ) if valid_action?(:edit) && show_action?(:edit, resource) %>
             <%= link_to(
               t("administrate.actions.destroy"),
               [namespace, resource],
               class: "table__action table__action--destroy",
               method: :delete,
               data: { confirm: t("administrate.actions.confirm") }
-            ) if valid_action?(:destroy) %>
+            ) if valid_action?(:destroy) && show_action?(:destroy, resource) %>
             <% collection_presenter.resource_actions(resource).each do |name, url, html_options = {}| %>
               <% html_options[:class] = html_options.fetch(:class, '').split(/\s+/).append('table__action').join(' ') %>
               <% unless url.is_a?(String) %>

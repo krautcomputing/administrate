@@ -104,6 +104,11 @@ module Administrate
       end
     end
 
+    # Add authorization logic to this method.
+    helper_method def show_action?(action, resource)
+      true
+    end
+
     def routes
       @routes ||= Namespace.new(namespace).routes
     end
@@ -128,15 +133,21 @@ module Administrate
     end
 
     def requested_resource
-      @_requested_resource ||= find_resource(params[:id])
+      @_requested_resource ||= find_resource(params[:id]).tap do |resource|
+        authorize_resource(resource)
+      end
     end
 
     def new_resource
-      @_new_resource ||= resource_class.new(resource_params)
+      @_new_resource ||= resource_class.new(resource_params).tap do |resource|
+        authorize_resource(resource)
+      end
     end
 
-    def initialized_resource
-      @_initialized_resource ||= resource_class.new(params.permit(*permitted_attributes))
+    helper_method def initialized_resource
+      @_initialized_resource ||= resource_class.new(params.permit(*permitted_attributes)).tap do |resource|
+        authorize_resource(resource)
+      end
     end
 
     def show_page
@@ -217,6 +228,11 @@ module Administrate
     # to redirect somewhere else.
     def after_create_path
       [namespace, new_resource]
+    end
+
+    # Add authorization logic to this method.
+    def authorize_resource(resource)
+      resource
     end
   end
 end

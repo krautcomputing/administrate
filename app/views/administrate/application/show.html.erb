@@ -32,7 +32,7 @@ as well as a link to its edit page.
       class: "button",
       method: :delete,
       data: { confirm: t("administrate.actions.confirm") }
-    ) if valid_action?(:destroy) %>
+    ) if valid_action?(:destroy) && show_action?(:edit, page.resource) %>
     <% page.resource_actions.each do |name, url, html_options = {}| %>
       <% html_options[:class] = html_options.fetch(:class, '').split(/\s+/).append('button').join(' ') %>
       <% unless url.is_a?(String) %>
