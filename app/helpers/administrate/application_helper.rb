@@ -25,6 +25,13 @@ module Administrate
       end.compact.join.html_safe
     end
 
+    def render_custom_markup_for_index(resource)
+      partial = "admin/#{resource.class.to_s.underscore.pluralize}/custom_markup_for_index"
+      if lookup_context.exists?(partial, [], true)
+        render partial: partial, locals: { resource: resource }
+      end
+    end
+
     def field_partial(field)
       @field_partials ||= {}
       @field_partials[field.name] ||= begin

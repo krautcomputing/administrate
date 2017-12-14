@@ -81,6 +81,7 @@ to display a collection of resources in an HTML table.
               <% end %>
               <%= link_to name, url, html_options %>
             <% end %>
+            <%= render_custom_markup_for_index resource %>
           </td>
           <% attributes = collection_presenter.attributes_for(resource) %>
           <% cache cache_key(resource, attributes) do %>
