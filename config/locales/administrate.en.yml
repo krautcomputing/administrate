@@ -4,6 +4,8 @@ en:
     actions:
       confirm: Are you sure?
       destroy: Destroy
+      edit: Edit
+      show: Show
       edit_resource: Edit %{name}
       show_resource: Show %{name}
       new_resource: New %{name}
