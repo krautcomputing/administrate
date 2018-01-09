@@ -209,6 +209,7 @@ module Administrate
     end
 
     delegate :resource_class, :resource_name, :namespace, to: :resource_resolver
+    helper_method :resource_class
     helper_method :namespace
     helper_method :resource_name
 
