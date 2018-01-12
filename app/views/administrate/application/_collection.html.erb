@@ -73,7 +73,7 @@ to display a collection of resources in an HTML table.
               method: :delete,
               data: { confirm: t("administrate.actions.confirm") }
             ) if valid_action?(:destroy) && show_action?(:destroy, resource) %>
-            <% collection_presenter.resource_actions(resource).each do |name, url, html_options = {}| %>
+            <% collection_presenter.resource_actions(resource, params).each do |name, url, html_options = {}| %>
               <% html_options[:class] = html_options.fetch(:class, '').split(/\s+/).append('table__action').join(' ') %>
               <% unless url.is_a?(String) %>
                 <% options = url.last.is_a?(Hash) ? url.pop : {} %>

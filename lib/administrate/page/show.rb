@@ -20,8 +20,8 @@ module Administrate
         end
       end
 
-      def resource_actions
-        dashboard.resource_actions(resource)
+      def resource_actions(params)
+        dashboard.resource_actions(resource, params)
       end
     end
   end

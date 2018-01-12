@@ -79,7 +79,7 @@ module Administrate
 
     # Override this method in your dashboard
     # to add custom resource actions.
-    def resource_actions(resource)
+    def resource_actions(resource, params)
       []
     end
 
