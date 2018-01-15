@@ -37,9 +37,11 @@ module Administrate
         self.class.permitted_attribute(attribute)
       end
 
-      def resources(page = 1)
-        resources = order.apply(data).page(page).per(limit)
-        includes.any? ? resources.includes(*includes) : resources
+      def resources(page = nil)
+        resources = order.apply(data)
+        resources = resources.page(page).per(limit) if page
+        resources = resources.includes(*includes) if includes.any?
+        resources
       end
 
       def more_than_limit?
