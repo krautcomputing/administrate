@@ -18,21 +18,26 @@ as defined by the routes in the `admin/` namespace
   <% if ns.routes.map(&:first).include?("#{namespace}/dashboards") %>
     <li>
       <%= link_to(
-        'Dashboard',
+        '&raquo; Dashboard'.html_safe,
         [namespace, :root],
         class: "sidebar__link
                 sidebar__link--#{controller_name == 'dashboards' ? :active : :inactive}"
       ) %>
     </li>
   <% end %>
-  <% ns.resources.each do |resource| %>
-    <li>
-      <%= link_to(
-        display_resource_name(resource),
-        [namespace, resource_index_route_key(resource)],
-        class: "sidebar__link
-                sidebar__link--#{nav_link_state(resource)}"
-      ) %>
+  <% ns.resource_groups.each do |label, resources| %>
+    <li class="sidebar__header">
+      <%= label.to_s.titleize.upcase %>
     </li>
+    <% resources.each do |resource| %>
+      <li>
+        <%= link_to(
+          "&raquo; #{display_resource_name(resource)}".html_safe,
+          [namespace, resource_index_route_key(resource)],
+          class: "sidebar__link
+                  sidebar__link--#{nav_link_state(resource)}"
+        ) %>
+      </li>
+    <% end %>
   <% end %>
 </ul>

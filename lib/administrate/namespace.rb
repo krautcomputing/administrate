@@ -6,9 +6,29 @@ module Administrate
       @namespace = namespace
     end
 
+    def resource_groups
+      if resource_groups = Administrate.configuration.resource_groups
+        all_resources = resources
+        resource_groups.keys.each do |label|
+          resource_groups[label].map! do |path|
+            Administrate::Resource.new(namespace, path).tap do |resource|
+              unless resource.exists?
+                fail "Resource #{path} does not exist."
+              end
+              all_resources.delete(resource)
+            end
+          end
+        end
+        resource_groups[nil] = all_resources
+        resource_groups
+      else
+        { nil => resources }
+      end
+    end
+
     def resources
       @resources ||= routes.map(&:first).uniq.map do |path|
-        Resource.new(namespace, path)
+        Administrate::Resource.new(namespace, path)
       end.select(&:exists?)
     end
 
