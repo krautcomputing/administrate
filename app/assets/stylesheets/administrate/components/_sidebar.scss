@@ -13,21 +13,38 @@
 }
 
 .sidebar__list {
-  margin: 0 $base-spacing $base-spacing;
-}
+  margin-bottom: 20px;
+  background-color: #222d32;
 
-.sidebar__link {
-  color: $base-font-color;
-  display: block;
-  padding-top: $base-spacing;
-  transition: color 0.05s linear;
-
-  &:hover {
-    color: $blue;
+  li {
+    margin: 0;
   }
 }
 
-.sidebar__link--active {
-  color: $blue;
-  font-weight: $bold-font-weight;
+.sidebar__header,
+.sidebar__link {
+  line-height: 20px;
+}
+
+.sidebar__header {
+  padding: 15px 10px 0;
+  min-height: 20px;
+  color: darken(#b8c7ce, 20%);
+  font-size: 0.8em;
+  letter-spacing: 2px;
+}
+
+.sidebar__link {
+  padding: 10px;
+  min-height: 30px;
+  color: #b8c7ce;
+  display: block;
+  transition: color 0.05s linear;
+
+  &:hover,
+  .sidebar__link--active {
+    font-weight: $bold-font-weight;
+    background-color: #2c3b41;
+    color: white;
+  }
 }
