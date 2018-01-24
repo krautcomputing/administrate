@@ -22,7 +22,7 @@ It renders the `_table` partial to display details about the resources.
 %>
 
 <% content_for(:title) do %>
-  <%= display_resource_name(page.resource_name) %>
+  <%= display_resource_name(@page.resource_name) %>
 <% end %>
 
 <% content_for :filters do %>
@@ -39,12 +39,12 @@ It renders the `_table` partial to display details about the resources.
     <%= link_to(
       t(
         "administrate.actions.new_resource",
-        name: page.resource_name.titleize.downcase
+        name: @page.resource_name.titleize.downcase
       ),
-      [:new, namespace, page.resource_path],
+      [:new, namespace, @page.resource_path],
       class: "button",
     ) if valid_action?(:new) && show_action?(:new, resource_class) %>
-    <% page.collection_actions.each do |name, url, html_options = {}| %>
+    <% @page.collection_actions.each do |name, url, html_options = {}| %>
       <% html_options[:class] = html_options.fetch(:class, '').split(/\s+/).append('button').join(' ') %>
       <% unless url.is_a?(String) %>
         <% options = url.last.is_a?(Hash) ? url.pop : {} %>
@@ -55,4 +55,4 @@ It renders the `_table` partial to display details about the resources.
   </div>
 </header>
 
-<%= render "collection", collection_presenter: page, resources: resources %>
+<%= render "collection", collection_presenter: @page, resources: resources %>

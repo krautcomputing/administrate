@@ -83,13 +83,13 @@ to display a collection of resources in an HTML table.
             <% end %>
             <%= render_custom_markup_for_index resource %>
           </td>
-          <% attributes = collection_presenter.attributes_for(resource) %>
-          <% cache cache_key(resource, attributes) do %>
-            <% attributes.each do |attribute| %>
+          <% fields = collection_presenter.fields_for(resource) %>
+          <% cache cache_key(resource, fields) do %>
+            <% fields.each do |field| %>
               <td class="cell-data
-                         cell-data--<%= attribute.name.dasherize %>
-                         cell-data--<%= attribute.html_class %>">
-                <%= render_field attribute %>
+                         cell-data--<%= field.name.dasherize %>
+                         cell-data--<%= field.html_class %>">
+                <%= render_field field %>
               </td>
             <% end %>
           <% end %>
