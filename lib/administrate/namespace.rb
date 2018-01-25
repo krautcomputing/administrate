@@ -7,10 +7,10 @@ module Administrate
     end
 
     def resource_groups
-      if resource_groups = Administrate.configuration.resource_groups
-        all_resources = resources
-        resource_groups.keys.each do |label|
-          resource_groups[label].map! do |path|
+      @resource_groups ||= if resource_groups = Administrate.configuration.resource_groups.try(:deep_dup)
+        all_resources = resources.dup
+        resource_groups.transform_values! do |paths|
+          paths.map do |path|
             Administrate::Resource.new(namespace, path).tap do |resource|
               unless resource.exists?
                 fail "Resource #{path} does not exist."
@@ -19,7 +19,9 @@ module Administrate
             end
           end
         end
-        resource_groups[nil] = all_resources
+        if all_resources.any?
+          resource_groups[nil] = all_resources
+        end
         resource_groups
       else
         { nil => resources }

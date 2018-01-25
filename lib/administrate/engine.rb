@@ -14,11 +14,11 @@ require "administrate/page/form"
 require "administrate/page/show"
 require "administrate/page/collection"
 require "administrate/order"
+require "administrate/resource"
 require "administrate/resource_resolver"
 require "administrate/filter"
 require "administrate/search"
 require "administrate/namespace"
-require "administrate/namespace/resource"
 
 module Administrate
   class Engine < ::Rails::Engine
