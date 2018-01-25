@@ -12,7 +12,7 @@ module Administrate
         when custom_display_option = options[:display_option]
           custom_display_option.call option
         when option.present?
-          option.titleize
+          option.humanize
         else
           '-'
         end
