@@ -18,7 +18,7 @@ as defined by the routes in the `admin/` namespace
   <% if ns.routes.map(&:first).include?("#{namespace}/dashboards") %>
     <li>
       <%= link_to(
-        '&raquo; Dashboard'.html_safe,
+        'Dashboard',
         [namespace, :root],
         class: "sidebar__link
                 sidebar__link--#{controller_name == 'dashboards' ? :active : :inactive}"
@@ -32,7 +32,7 @@ as defined by the routes in the `admin/` namespace
     <% resources.each do |resource| %>
       <li>
         <%= link_to(
-          "&raquo; #{display_resource_name(resource)}".html_safe,
+          display_resource_name(resource),
           [namespace, resource_index_route_key(resource)],
           class: "sidebar__link
                   sidebar__link--#{nav_link_state(resource)}"
