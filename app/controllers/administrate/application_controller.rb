@@ -2,6 +2,8 @@ module Administrate
   class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception
 
+    layout -> { request.xhr? ? false : 'administrate/application' }
+
     def index
       resources = Filter.apply(resource_resolver, filters)
       resources = resources.includes(*resource_includes) if resource_includes.any?
