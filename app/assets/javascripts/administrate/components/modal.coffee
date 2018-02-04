@@ -11,10 +11,12 @@ $(document)
     $modalBody = $(@).find('.modal-body')
     $modalBody.text('Loading, please wait...')
     loadRemoteUrlToModalBody $modalBody, remoteUrl
-  .on 'click', "#{selector} a:not([data-method]):not([data-remote])", (e) ->
+  .on 'click', "#{selector} a:not([data-method]):not([data-remote]):not([href='#'])", (e) ->
     e.preventDefault()
     loadRemoteUrlToModalBody $(@).parents('.modal-body'), e.currentTarget.href
-  .on 'ajax:success', selector, ->
+  .on 'ajax:success', selector, (_, data) ->
+    if data.success?.length
+      alert data.success
     $(@).modal('hide')
   .on 'ajax:error', selector, (_, xhr) ->
     alert xhr.responseJSON.error
