@@ -20,4 +20,8 @@
 
 .header__actions {
   margin-left: $base-spacing;
+
+  a.button {
+    margin-bottom: 5px;
+  }
 }

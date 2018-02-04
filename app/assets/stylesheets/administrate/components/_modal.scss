@@ -4,4 +4,8 @@
     padding-left: 0;
     padding-right: 0;
   }
+
+  .field-unit__field {
+    @include span-columns(8 of 12);
+  }
 }
