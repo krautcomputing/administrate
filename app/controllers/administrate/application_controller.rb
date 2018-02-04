@@ -35,45 +35,35 @@ module Administrate
       }
     end
 
-    def create
+    def create(render_success_xhr_response: true)
       if save_resource_on_create(new_resource)
         if request.xhr?
-          head :ok
+          head :ok if render_success_xhr_response
         else
-          redirect_to(
-            after_create_path,
-            notice: translate_with_resource("create.success"),
-          )
+          redirect_to after_create_path, notice: translate_with_resource("create.success")
         end
       else
         if request.xhr?
-          head :unprocessable_entity
+          render json: { error: new_resource.errors.full_messages.join(', ') }, status: :unprocessable_entity
         else
-          render :new, locals: {
-            page: create_form
-          }
+          render :new, locals: { page: create_form }
         end
       end
     end
 
-    def update
+    def update(render_success_xhr_response: true)
       requested_resource.attributes = resource_params
       if save_resource_on_update(requested_resource)
         if request.xhr?
-          head :ok
+          head :ok if render_success_xhr_response
         else
-          redirect_to(
-            [namespace, requested_resource],
-            notice: translate_with_resource("update.success"),
-          )
+          redirect_to [namespace, requested_resource], notice: translate_with_resource("update.success")
         end
       else
         if request.xhr?
-          head :unprocessable_entity
+          render json: { error: requested_resource.errors.full_messages.join(', ') }, status: :unprocessable_entity
         else
-          render :edit, locals: {
-            page: edit_page
-          }
+          render :edit, locals: { page: edit_page }
         end
       end
     end
