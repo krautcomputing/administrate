@@ -7,6 +7,7 @@ ol {
 
 dl {
   margin-bottom: $small-spacing;
+  overflow: auto;
 
   dt {
     font-weight: $bold-font-weight;
