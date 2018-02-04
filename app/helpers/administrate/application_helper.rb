@@ -88,5 +88,13 @@ module Administrate
     def sanitized_order_params
       params.permit(:search, :id, :order, :page, :per_page, :direction, :orders)
     end
+
+    def link_to_modal(name = nil, options = nil, html_options = nil, &block)
+      html_options, options, name = options, name, capture(&block) if block_given?
+      html_options ||= {}
+      html_options[:data] ||= {}
+      html_options[:data].merge!(toggle: 'modal', target: '#modal', :'remote-url' => url_for(options))
+      link_to name, '#', html_options
+    end
   end
 end
