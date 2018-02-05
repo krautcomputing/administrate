@@ -7,10 +7,10 @@ loadRemoteUrlToModalBody = ($modalBody, url) ->
 
 $(document)
   .on 'show.bs.modal', selector, (e) ->
-    remoteUrl = $(e.relatedTarget).data('remote-url')
+    url = $(e.relatedTarget).data('url')
     $modalBody = $(@).find('.modal-body')
     $modalBody.text('Loading, please wait...')
-    loadRemoteUrlToModalBody $modalBody, remoteUrl
+    loadRemoteUrlToModalBody $modalBody, url
   .on 'click', "#{selector} a:not([data-method]):not([data-remote]):not([href='#'])", (e) ->
     e.preventDefault()
     loadRemoteUrlToModalBody $(@).parents('.modal-body'), e.currentTarget.href

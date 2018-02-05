@@ -93,7 +93,7 @@ module Administrate
       html_options, options, name = options, name, capture(&block) if block_given?
       html_options ||= {}
       html_options[:data] ||= {}
-      html_options[:data].merge!(toggle: 'modal', target: '#modal', :'remote-url' => url_for(options))
+      html_options[:data].merge!(toggle: 'modal', target: '#modal', url: url_for(options))
       link_to name, '#', html_options
     end
   end
