@@ -2,6 +2,7 @@
 #= require jquery_ujs
 #= require selectize
 #= require moment
+#= require moment/en-gb
 #= require datetime_picker
 #= require turbolinks
 #= require jquery.floatThead/jquery.floatThead

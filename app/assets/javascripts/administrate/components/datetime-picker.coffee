@@ -1,3 +1,3 @@
 $(document).on 'turbolinks:load', ->
-  $('.datetimepicker').datetimepicker format: 'YYYY-MM-DD HH:mm:ss'
-  $('.datepicker').datetimepicker     format: 'YYYY-MM-DD'
+  $('.datetimepicker').datetimepicker locale: 'en-gb', format: 'YYYY-MM-DD HH:mm:ss'
+  $('.datepicker').datetimepicker     locale: 'en-gb', format: 'YYYY-MM-DD'
