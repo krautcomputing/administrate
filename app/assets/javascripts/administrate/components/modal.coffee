@@ -12,7 +12,7 @@ $(document)
     $modalBody.text('Loading, please wait...')
     loadRemoteUrlToModalBody $modalBody, url
   .on 'click', "#{selector} a:not([data-method]):not([data-remote]):not([href='#'])", (e) ->
-    unless e.metaKey?
+    unless e.metaKey
       e.preventDefault()
       loadRemoteUrlToModalBody $(@).parents('.modal-body'), e.currentTarget.href
   .on 'ajax:success', selector, (_, data) ->
