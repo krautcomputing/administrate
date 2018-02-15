@@ -3,7 +3,7 @@
 #= require selectize
 #= require moment
 #= require moment/en-gb
-#= require datetime_picker
+#= require bootstrap-datetimepicker
 #= require turbolinks
 #= require jquery.floatThead/jquery.floatThead
 #= require_tree .

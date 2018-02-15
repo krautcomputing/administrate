@@ -1,6 +1,6 @@
 require "turbolinks"
 require "rails-assets-jquery.floatThead"
-require "datetime_picker_rails"
+require "bootstrap3-datetimepicker-rails"
 require "jquery-rails"
 require "kaminari"
 require "momentjs-rails"
