@@ -2,7 +2,7 @@ module Administrate
   class ApplicationController < ActionController::Base
     protect_from_forgery with: :exception
 
-    layout -> { request.xhr? ? false : 'administrate/application' }
+    layout -> { request.xhr? ? 'administrate/xhr' : 'administrate/application' }
 
     def index
       resources = Filter.apply(resource_resolver, filters)

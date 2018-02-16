@@ -1,0 +1,4 @@
+%div{ class: page_html_class }
+  - if defined?(Gon)
+    = Gon::Base.render_data
+  = yield
