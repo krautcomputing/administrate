@@ -30,14 +30,16 @@ as defined by the routes in the `admin/` namespace
       <%= label.to_s.titleize.upcase %>
     </li>
     <% resources.each do |resource| %>
-      <li>
-        <%= link_to(
-          display_resource_name(resource),
-          [namespace, resource_index_route_key(resource)],
-          class: "sidebar__link
-                  sidebar__link--#{nav_link_state(resource)}"
-        ) %>
-      </li>
+      <% if valid_action?(:index, resource) && show_action?(:index, resource) %>
+        <li>
+          <%= link_to(
+            display_resource_name(resource),
+            [namespace, resource_index_route_key(resource)],
+            class: "sidebar__link
+                    sidebar__link--#{nav_link_state(resource)}"
+          ) %>
+        </li>
+      <% end %>
     <% end %>
   <% end %>
 </ul>
