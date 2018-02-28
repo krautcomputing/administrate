@@ -18,7 +18,13 @@ module Administrate
       end
 
       def associated_class_name
-        options.fetch(:class_name, attribute.to_s.singularize.camelcase)
+        options.fetch :class_name do
+          if reflection = resource.class.reflections[attribute.to_s]
+            reflection.class_name
+          else
+            attribute.to_s.singularize.camelcase
+          end
+        end
       end
 
       def candidate_resources
