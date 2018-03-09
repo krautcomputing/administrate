@@ -7,14 +7,14 @@ module Administrate
         display_candidate_resource data
       end
 
+      def associated_class
+        associated_class_name.constantize
+      end
+
       protected
 
       def associated_dashboard
         "#{associated_class_name}Dashboard".safe_constantize.try(:new)
-      end
-
-      def associated_class
-        associated_class_name.constantize
       end
 
       def associated_class_name
