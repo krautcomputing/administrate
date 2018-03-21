@@ -28,6 +28,12 @@ to do the heavy lifting.
   </div>
 </header>
 
+<% if @notice %>
+  <div class="notice">
+    <%= @notice.html_safe %>
+  </div>
+<% end %>
+
 <% if @error %>
   Error: <%= @error.html_safe %>
 <% else %>
