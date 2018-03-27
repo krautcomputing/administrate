@@ -62,7 +62,7 @@ module Administrate
             condition_parts << "#{resource_class.table_name}.id IN (:#{condition_param})"
             condition_params[condition_param] = ids
           else
-            condition_parts << "#{attribute_with_table_name} ILIKE :query"
+            condition_parts << "#{attribute_with_table_name}::text ILIKE :query"
           end
         end
         if @search_relations
