@@ -72,13 +72,8 @@ module Administrate
       resource_name.to_s.classify.constantize
     end
 
-    def display_resource_name(resource_name)
-      class_from_resource(resource_name).
-        model_name.
-        human(
-          count: PLURAL_MANY_COUNT,
-          default: resource_name.to_s.pluralize.titleize,
-        )
+    def display_resource_name(resource_name, count = PLURAL_MANY_COUNT)
+      class_from_resource(resource_name).model_name.human(count: count)
     end
 
     def resource_index_route_key(resource_name)
