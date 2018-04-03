@@ -1,7 +1,5 @@
 module Administrate
   module ApplicationHelper
-    PLURAL_MANY_COUNT = 2.1
-
     def page_html_class
       "#{params[:controller].split('/').last} #{params[:action]}"
     end
@@ -72,8 +70,9 @@ module Administrate
       resource_name.to_s.classify.constantize
     end
 
-    def display_resource_name(resource_name, count = PLURAL_MANY_COUNT)
-      class_from_resource(resource_name).model_name.human(count: count)
+    def display_resource_name(resource_name, plural = true)
+      resource_name = class_from_resource(resource_name).model_name.human
+      plural ? resource_name.pluralize : resource_name
     end
 
     def resource_index_route_key(resource_name)
