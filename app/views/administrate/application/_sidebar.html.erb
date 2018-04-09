@@ -7,39 +7,41 @@ for all resources in the admin dashboard,
 as defined by the routes in the `admin/` namespace
 %>
 
-<% if Rails.env.development? %>
-  <div class="sidebar_dev_env">
-    DEVELOPMENT
-  </div>
-<% end %>
-
-<ul class="sidebar__list">
-  <% ns = Administrate::Namespace.new(namespace) %>
-  <% if ns.routes.map(&:first).include?("#{namespace}/dashboards") %>
-    <li>
-      <%= link_to(
-        'Dashboard',
-        [namespace, :root],
-        class: "sidebar__link
-                sidebar__link--#{controller_name == 'dashboards' ? :active : :inactive}"
-      ) %>
-    </li>
+<% cache ['sidebar', Rails.env, resource_name, Rails.configuration.booted_at.to_i] do %>
+  <% if Rails.env.development? %>
+    <div class="sidebar_dev_env">
+      DEVELOPMENT
+    </div>
   <% end %>
-  <% ns.resource_groups.each do |label, resources| %>
-    <li class="sidebar__header">
-      <%= label.to_s.titleize.upcase %>
-    </li>
-    <% resources.each do |resource| %>
-      <% if valid_action?(:index, resource) && show_action?(:index, resource) %>
-        <li>
-          <%= link_to(
-            display_resource_name(resource),
-            [namespace, resource_index_route_key(resource)],
-            class: "sidebar__link
-                    sidebar__link--#{nav_link_state(resource)}"
-          ) %>
-        </li>
+
+  <ul class="sidebar__list">
+    <% ns = Administrate::Namespace.new(namespace) %>
+    <% if ns.routes.map(&:first).include?("#{namespace}/dashboards") %>
+      <li>
+        <%= link_to(
+          'Dashboard',
+          [namespace, :root],
+          class: "sidebar__link
+                  sidebar__link--#{controller_name == 'dashboards' ? :active : :inactive}"
+        ) %>
+      </li>
+    <% end %>
+    <% ns.resource_groups.each do |label, resources| %>
+      <li class="sidebar__header">
+        <%= label.to_s.titleize.upcase %>
+      </li>
+      <% resources.each do |resource| %>
+        <% if valid_action?(:index, resource) && show_action?(:index, resource) %>
+          <li>
+            <%= link_to(
+              display_resource_name(resource),
+              [namespace, resource_index_route_key(resource)],
+              class: "sidebar__link
+                      sidebar__link--#{nav_link_state(resource)}"
+            ) %>
+          </li>
+        <% end %>
       <% end %>
     <% end %>
-  <% end %>
-</ul>
+  </ul>
+<% end %>
