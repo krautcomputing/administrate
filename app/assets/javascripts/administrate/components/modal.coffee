@@ -13,7 +13,7 @@ $(document)
     if e.relatedTarget?
       url = $(e.relatedTarget).data('url')
       loadRemoteUrlInModal url, true
-  .on 'click', "#{selector} a:not([data-method]):not([data-remote]):not([href='#'])", (e) ->
+  .on 'click', "#{selector} a:not([data-method]):not([data-remote]):not([href='#']):not([href^='slack:'])", (e) ->
     unless e.metaKey
       e.preventDefault()
       loadRemoteUrlInModal e.currentTarget.href
