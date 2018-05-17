@@ -78,6 +78,9 @@ module Administrate
               v.key == value
             end
           end
+          unless value_from_values
+            fail %(Could not find "#{value}" in values for filter "#{key}".)
+          end
           Value.new(key: value, label: value_from_values.label)
         end
         if @value.is_a?(Array)
