@@ -57,7 +57,7 @@ module Administrate
 
     def permitted_attributes(action)
       form_attributes(action).map do |attr|
-        attribute_types[attr].permitted_attribute(attr)
+        attribute_types[attr].permitted_attribute(attr, action)
       end.uniq
     end
 

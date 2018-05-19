@@ -10,16 +10,10 @@ module Administrate
         )
       end
 
-      def self.permitted_attribute(attr, options = nil)
-        associated_class_name =
-          if options
-            options.fetch(:class_name, attr.to_s.singularize.camelcase)
-          else
-            attr
-          end
+      def self.permitted_attribute(attr, action)
         related_dashboard_attributes =
-          Administrate::ResourceResolver.new("admin/#{associated_class_name}").
-            dashboard_class.new.permitted_attributes + [:id]
+          Administrate::ResourceResolver.new("admin/#{attr}").
+            dashboard_class.new.permitted_attributes(action) + [:id]
 
         { "#{attr}_attributes": related_dashboard_attributes }
       end

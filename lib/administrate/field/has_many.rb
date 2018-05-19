@@ -7,7 +7,7 @@ module Administrate
     class HasMany < Associative
       DEFAULT_LIMIT = 5
 
-      def self.permitted_attribute(attr, _options = nil)
+      def self.permitted_attribute(attr, _)
         { "#{attr.to_s.singularize}_ids".to_sym => [] }
       end
 
