@@ -24,7 +24,7 @@ module Administrate
         options.fetch(:searchable, deferred_class.searchable?)
       end
 
-      def permitted_attribute(attr, _options = nil)
+      def permitted_attribute(attr, *)
         options.fetch(:foreign_key,
           deferred_class.permitted_attribute(attr, options))
       end

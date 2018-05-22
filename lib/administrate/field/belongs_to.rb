@@ -3,7 +3,7 @@ require_relative "associative"
 module Administrate
   module Field
     class BelongsTo < Associative
-      def self.permitted_attribute(attr, _)
+      def self.permitted_attribute(attr, *)
         :"#{attr}_id"
       end
 
