@@ -1,3 +1,23 @@
+.modal-nav {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  z-index: 1000;
+
+  .back,
+  .forward {
+    display: none;
+  }
+
+  .back {
+    margin-right: 10px;
+  }
+
+  .forward {
+    margin-left: 10px;
+  }
+}
+
 .modal-body {
 
   header {

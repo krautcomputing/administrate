@@ -1,4 +1,14 @@
 #modal.modal.fade
   .modal-dialog.modal-lg
     .modal-content
+      .modal-nav
+        = link_to '#', class: 'back' do
+          %i.fas.fa-backward
+          back
+        = link_to '#', class: 'reload' do
+          %i.fas.fa-sync-alt
+          reload
+        = link_to '#', class: 'forward' do
+          %i.fas.fa-forward
+          forward
       .modal-body
