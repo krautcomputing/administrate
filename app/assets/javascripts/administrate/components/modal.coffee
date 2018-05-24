@@ -15,7 +15,7 @@ modalSelector = '#modal'
   $modalBody = $('.modal-body', modalSelector)
   if showLoading
     $modalBody.text('Loading, please wait...')
-  $modalBody.load url, ->
+  $modalBody.load urls[urlIndex], ->
     $(@).find('a[data-method="post"], form').attr('data-remote', 'true')
     $(@).parents('.modal').trigger('content-loaded')
 
