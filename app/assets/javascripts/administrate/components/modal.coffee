@@ -5,9 +5,10 @@ modalSelector = '#modal'
   if Number.isInteger(urlOrIndex)
     urlIndex = urlOrIndex
   else
-    urlIndex = urls.length
-    urls.push urlOrIndex
+    urlIndex = $(modalSelector).data('urlIndex') || 0
+    urls.splice urlIndex + 1, urls.length - urlIndex, urlOrIndex
     $(modalSelector).data 'urls', urls
+    urlIndex = urls.length - 1
   $('.back',    modalSelector).toggle urlIndex > 0
   $('.forward', modalSelector).toggle urlIndex < urls.length - 1
   $(modalSelector).data 'urlIndex', urlIndex
