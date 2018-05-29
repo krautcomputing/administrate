@@ -37,10 +37,13 @@ module Administrate
 
     def create(render_success_xhr_response: true)
       if save_resource_on_create(new_resource)
+        notice = translate_with_resource("create.success")
         if request.xhr?
-          head :ok if render_success_xhr_response
+          if render_success_xhr_response
+            render json: { next: url_for(after_create_path), notice: notice  }
+          end
         else
-          redirect_to after_create_path, notice: translate_with_resource("create.success")
+          redirect_to after_create_path, notice: notice
         end
       else
         if request.xhr?
@@ -54,10 +57,13 @@ module Administrate
     def update(render_success_xhr_response: true)
       requested_resource.attributes = resource_params
       if save_resource_on_update(requested_resource)
+        notice = translate_with_resource("update.success")
         if request.xhr?
-          head :ok if render_success_xhr_response
+          if render_success_xhr_response
+            render json: { next: url_for(after_update_path), notice: notice }
+          end
         else
-          redirect_to [namespace, requested_resource], notice: translate_with_resource("update.success")
+          redirect_to after_update_path, notice: notice
         end
       else
         if request.xhr?
@@ -221,6 +227,12 @@ module Administrate
     # to redirect somewhere else.
     def after_create_path
       [namespace, new_resource]
+    end
+
+    # Override this method in your resource controller
+    # to redirect somewhere else.
+    def after_update_path
+      [namespace, requested_resource]
     end
 
     # Add authorization logic to this method.

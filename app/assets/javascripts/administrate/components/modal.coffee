@@ -32,9 +32,12 @@ $(document)
       e.preventDefault()
       loadRemoteUrlInModal e.currentTarget.href
   .on 'ajax:success', modalSelector, (_, data) ->
-    if data.success?.length
-      alert data.success
-    $(@).modal('hide')
+    if data.next?.length
+      loadRemoteUrlInModal data.next
+    else
+      $(@).modal('hide')
+    if data.notice?.length
+      alert data.notice
   .on 'ajax:error', modalSelector, (_, xhr) ->
     alert xhr.responseJSON.error
   .on 'click', "#{modalSelector} .modal-nav .reload", (e) ->
