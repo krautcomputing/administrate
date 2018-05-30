@@ -37,13 +37,13 @@ module Administrate
 
     def create(render_success_xhr_response: true)
       if save_resource_on_create(new_resource)
-        notice = translate_with_resource("create.success")
+        flash[:notice] = translate_with_resource("create.success")
         if request.xhr?
           if render_success_xhr_response
-            render json: { next: url_for(after_create_path), notice: notice  }
+            render json: { next: url_for(after_create_path), notice: flash[:notice] }
           end
         else
-          redirect_to after_create_path, notice: notice
+          redirect_to after_create_path
         end
       else
         if request.xhr?
@@ -57,13 +57,13 @@ module Administrate
     def update(render_success_xhr_response: true)
       requested_resource.attributes = resource_params
       if save_resource_on_update(requested_resource)
-        notice = translate_with_resource("update.success")
+        flash[:notice] = translate_with_resource("update.success")
         if request.xhr?
           if render_success_xhr_response
-            render json: { next: url_for(after_update_path), notice: notice }
+            render json: { next: url_for(after_update_path), notice: flash[:notice] }
           end
         else
-          redirect_to after_update_path, notice: notice
+          redirect_to after_update_path
         end
       else
         if request.xhr?
