@@ -11,11 +11,11 @@ module Administrate
         associated_class_name.constantize
       end
 
-      protected
-
       def associated_dashboard
         "#{associated_class_name}Dashboard".safe_constantize.try(:new)
       end
+
+      protected
 
       def associated_class_name
         options.fetch :class_name do
