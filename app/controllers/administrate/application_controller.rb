@@ -37,13 +37,14 @@ module Administrate
 
     def create(render_success_xhr_response: true)
       if save_resource_on_create(new_resource)
-        flash[:notice] = translate_with_resource("create.success")
+        notice = translate_with_resource("create.success")
         if request.xhr?
           if render_success_xhr_response
-            render json: { next: url_for(after_create_path), notice: flash[:notice] }
+            response.headers[NOTICE_RESPONSE_HEADER] = notice
+            render json: { next: url_for(after_create_path) }
           end
         else
-          redirect_to after_create_path
+          redirect_to after_create_path, notice: notice
         end
       else
         if request.xhr?
@@ -57,13 +58,14 @@ module Administrate
     def update(render_success_xhr_response: true)
       requested_resource.attributes = resource_params
       if save_resource_on_update(requested_resource)
-        flash[:notice] = translate_with_resource("update.success")
+        notice = translate_with_resource("update.success")
         if request.xhr?
           if render_success_xhr_response
-            render json: { next: url_for(after_update_path), notice: flash[:notice] }
+            response.headers[NOTICE_RESPONSE_HEADER] = notice
+            render json: { next: url_for(after_update_path) }
           end
         else
-          redirect_to after_update_path
+          redirect_to after_update_path, notice: notice
         end
       else
         if request.xhr?
@@ -105,6 +107,15 @@ module Administrate
     # Add authorization logic to this method.
     helper_method def show_action?(action, resource)
       true
+    end
+
+
+    def add_notice(notice)
+      if request.xhr?
+        response.headers[NOTICE_RESPONSE_HEADER] = [response.headers[NOTICE_RESPONSE_HEADER].presence, notice].compact.join(' ')
+      else
+        flash[:notice] = [flash[:notice].presence, notice].compact.join(' ')
+      end
     end
 
     def routes
