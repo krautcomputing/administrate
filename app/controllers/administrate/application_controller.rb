@@ -39,8 +39,8 @@ module Administrate
       if save_resource_on_create(new_resource)
         notice = translate_with_resource("create.success")
         if request.xhr?
+          response.headers[NOTICE_RESPONSE_HEADER] = notice
           if render_success_xhr_response
-            response.headers[NOTICE_RESPONSE_HEADER] = notice
             render json: { next: url_for(after_create_path) }
           end
         else
@@ -60,8 +60,8 @@ module Administrate
       if save_resource_on_update(requested_resource)
         notice = translate_with_resource("update.success")
         if request.xhr?
+          response.headers[NOTICE_RESPONSE_HEADER] = notice
           if render_success_xhr_response
-            response.headers[NOTICE_RESPONSE_HEADER] = notice
             render json: { next: url_for(after_update_path) }
           end
         else
