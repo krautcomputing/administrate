@@ -99,7 +99,7 @@ module Administrate
     end
 
     helper_method def valid_action?(name, resource_or_class = resource_class)
-      klass = resource_or_class.is_a?(Class) ? resource_or_class : resource_or_class.class
+      klass = [Class, Administrate::Resource].include?(resource_or_class.class) ? resource_or_class : resource_or_class.class
       routes.any? do |controller, action|
         controller == "#{namespace}/#{klass.to_s.underscore.pluralize}" && action == name.to_s
       end
