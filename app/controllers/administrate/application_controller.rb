@@ -98,9 +98,10 @@ module Administrate
       resource_name.to_s.pluralize == resource.to_s ? :active : :inactive
     end
 
-    helper_method def valid_action?(name, resource = resource_class)
+    helper_method def valid_action?(name, resource_or_class = resource_class)
+      klass = resource_or_class.is_a?(Class) ? resource_or_class : resource_or_class.class
       routes.any? do |controller, action|
-        controller == "#{namespace}/#{resource.to_s.underscore.pluralize}" && action == name.to_s
+        controller == "#{namespace}/#{klass.to_s.underscore.pluralize}" && action == name.to_s
       end
     end
 
