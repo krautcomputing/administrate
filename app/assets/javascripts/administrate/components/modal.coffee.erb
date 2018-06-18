@@ -38,7 +38,7 @@ $(document)
       $(@).modal('hide')
     notice = xhr.getResponseHeader('<%= Administrate::NOTICE_RESPONSE_HEADER %>')
     if notice?.length
-      alert notice
+      toastr.success notice
   .on 'ajax:error', modalSelector, (_, xhr) ->
     alert xhr.responseJSON.error
   .on 'click', "#{modalSelector} .modal-nav .reload", (e) ->
