@@ -11,11 +11,14 @@ module Administrate
         all_resources = resources.dup
         resource_groups.transform_values! do |paths|
           paths.map do |path|
+            unless %r(\A#{namespace}/).match?(path)
+              path = "#{namespace}/#{path}"
+            end
             Administrate::Resource.new(namespace, path).tap do |resource|
               unless resource.exists?
                 fail "Resource #{path} does not exist."
               end
-              all_resources.delete(resource)
+              all_resources.delete(resource) or raise "Could not find resource #{path} in resources."
             end
           end
         end
