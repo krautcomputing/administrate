@@ -18,7 +18,7 @@ Gem::Specification.new do |s|
   s.add_dependency "actionview", ">= 4.2", "< 5.2"
   s.add_dependency "activerecord", ">= 4.2", "< 5.2"
 
-  s.add_dependency "autoprefixer-rails", "~> 8.0"
+  s.add_dependency "autoprefixer-rails", "~> 9.0"
   s.add_dependency "bourbon", "~> 4.3"
   s.add_dependency "bootstrap3-datetimepicker-rails", "~> 4.17"
   s.add_dependency "jquery-rails", ">= 4.0"
