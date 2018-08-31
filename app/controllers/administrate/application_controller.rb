@@ -41,7 +41,7 @@ module Administrate
         if request.xhr?
           response.headers[NOTICE_RESPONSE_HEADER] = notice
           if render_success_xhr_response
-            render json: { next: url_for(after_create_path) }
+            render json: { object: new_resource.as_json, next: url_for(after_create_path) }
           end
         else
           redirect_to after_create_path, notice: notice
@@ -62,7 +62,7 @@ module Administrate
         if request.xhr?
           response.headers[NOTICE_RESPONSE_HEADER] = notice
           if render_success_xhr_response
-            render json: { next: url_for(after_update_path) }
+            render json: { object: requested_resource.as_json, next: url_for(after_update_path) }
           end
         else
           redirect_to after_update_path, notice: notice
