@@ -2,7 +2,7 @@ require "administrate/engine"
 require "administrate/configuration"
 
 module Administrate
-  NOTICE_RESPONSE_HEADER = 'X-Uplink-Notice'
+  NOTICE_RESPONSE_HEADER = 'X-Administrate-Notice'
 
   class << self
     def configuration
