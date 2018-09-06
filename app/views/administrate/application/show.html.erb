@@ -47,10 +47,7 @@ as well as a link to its edit page.
 <dl>
   <% page.attributes(params[:action]).each do |attribute| %>
     <dt class="attribute-label">
-    <%= t(
-      "helpers.label.#{resource_name}.#{attribute.name}",
-      default: attribute.name.titleize,
-    ) %>
+      <%= t("helpers.label.#{resource_name}.#{attribute.name}", default: t("activerecord.attributes.#{resource_name}.#{attribute.name}", default: attribute.name.titleize)) %>
     </dt>
 
     <dd class="attribute-data
