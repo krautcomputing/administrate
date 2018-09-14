@@ -14,7 +14,7 @@ module Administrate
       when relation.acting_as? && relation.acting_as_model.columns_hash.key?(attribute.to_s)
         relation.order("#{relation.acting_as_model.table_name}.#{attribute} #{direction}")
       else
-        relation
+        raise "Don't know how to sort by #{attribute}."
       end
     end
 
