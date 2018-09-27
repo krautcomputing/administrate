@@ -36,11 +36,9 @@ module Administrate
         attribute.to_s
       end
 
-      attr_reader :attribute, :resource, :data, :page
+      attr_reader :attribute, :resource, :data, :page, :options
 
       protected
-
-      attr_reader :options
 
       def self.field_type
         to_s.split("::").last.underscore
