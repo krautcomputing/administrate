@@ -31,6 +31,11 @@ $(document)
     unless e.metaKey
       e.preventDefault()
       loadRemoteUrlInModal e.currentTarget.href
+  .on 'click', "#{modalSelector} a[data-target='#{modalSelector}']", ->
+    # When a modal toggle link is clicked inside a modal, trick Bootstrap
+    # into thinking that the modal is not yet open by removing the data
+    # from the element.
+    $(modalSelector).data('bs.modal', null)
   .on 'ajax:success', modalSelector, (e, data, status, xhr) ->
     if data.next?.length
       loadRemoteUrlInModal data.next
