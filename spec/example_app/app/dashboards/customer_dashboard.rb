@@ -1,4 +1,5 @@
 require "administrate/base_dashboard"
+require "administrate/field/has_many_variant"
 
 class CustomerDashboard < Administrate::BaseDashboard
   ATTRIBUTE_TYPES = {

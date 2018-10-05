@@ -95,8 +95,6 @@ module Administrate
     end
 
     def association_includes
-      association_classes = [Field::HasMany, Field::HasOne, Field::BelongsTo]
-
       collection_attributes.select do |key|
         field = attribute_types[key]
         next if field.respond_to?(:options) && field.options.key?(:include) && !field.options[:include]
@@ -112,6 +110,12 @@ module Administrate
 
     def const_not_found_message(candidates)
       "None of the form attributes constants could be found on #{self.class}: #{candidates.join(', ')}"
+    end
+
+    def association_classes
+      @association_classes ||=
+        ObjectSpace.each_object(Class).
+          select { |klass| klass < Administrate::Field::Associative }
     end
   end
 end
