@@ -27,7 +27,7 @@ $(document)
       loadRemoteUrlInModal url, true
   .on 'hide.bs.modal', modalSelector, ->
     $(modalSelector).data 'urls', []
-  .on 'click', "#{modalSelector} a:not([data-method]):not([data-remote]):not([href='#']):not([href^='slack:']):not([href^='mailto:'])", (e) ->
+  .on 'click', "#{modalSelector} a:not([data-method]):not([data-remote]):not([href='#']):not([href^='slack:']):not([href^='mailto:']):not([href$='.jpg']):not([href$='.png'])", (e) ->
     unless e.metaKey
       e.preventDefault()
       loadRemoteUrlInModal e.currentTarget.href
