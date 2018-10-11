@@ -15,7 +15,15 @@ module Administrate
         "#{associated_class_name}Dashboard".safe_constantize.try(:new)
       end
 
+      def nested_form(resource)
+        Administrate::Page::Form.new(resolver.dashboard_class.new, resource)
+      end
+
       protected
+
+      def resolver
+        Administrate::ResourceResolver.new("admin/#{associated_class_name}")
+      end
 
       def associated_class_name
         options.fetch :class_name do

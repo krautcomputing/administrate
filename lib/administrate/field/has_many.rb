@@ -7,8 +7,12 @@ module Administrate
     class HasMany < Associative
       DEFAULT_LIMIT = 5
 
-      def self.permitted_attribute(attr, *)
-        { "#{attr.to_s.singularize}_ids".to_sym => [] }
+      def self.permitted_attribute(attr, options)
+        related_dashboard_attributes = Administrate::ResourceResolver.new("admin/#{options[:class_name] || attr}").dashboard_class.new.permitted_attributes(options[:action]) + [:id]
+        {
+          "#{attr}_attributes":           related_dashboard_attributes,
+          "#{attr.to_s.singularize}_ids": []
+        }
       end
 
       def associated_collection
@@ -31,6 +35,10 @@ module Administrate
 
       def limit
         options.fetch(:limit, DEFAULT_LIMIT)
+      end
+
+      def nested?
+        !!options[:nested]
       end
 
       def permitted_attribute

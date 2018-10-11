@@ -1,33 +1,29 @@
 .field-unit {
   @include clearfix;
   @include fill-parent;
-  align-items: flex-start;
-  display: flex;
   margin-bottom: $base-spacing;
   position: relative;
 }
 
 .field-unit__label {
   @include span-columns(2 of 12);
+  min-width: 200px;
   text-align: right;
   padding-top: 5px;
 }
 
 .field-unit__field {
   @include span-columns(5 of 12);
+  min-width: 400px;
 }
 
 .field-unit--nested {
-  border: $base-border;
-  margin-left: 7.5%;
-  padding: $small-spacing;
-  width: 50%;
+  border-top: $base-border;
+  border-bottom: $base-border;
+  width: 100%;
+  margin: 20px 0;
 
-  .field-unit__field {
-    width: calc(75% - 1rem);
-  }
-
-  .field-unit__label {
-    width: calc(25% - 1rem);
+  legend {
+    margin-left: 10px;
   }
 }

@@ -19,11 +19,20 @@ and is augmented with [Selectize].
 [Selectize]: http://brianreavis.github.io/selectize.js
 %>
 
-<div class="field-unit__label">
-  <%= f.label field.attribute, for: "#{f.object_name}_#{field.attribute_key}" %>
-</div>
-<div class="field-unit__field">
+<% if field.nested? %>
+  <%= f.fields_for field.attribute, field.data do |has_many_f| %>
+    <% nested_form = field.nested_form(has_many_f.object) %>
+    <fieldset class="field-unit--nested">
+      <legend><%= nested_form.resource_name.titleize %></legend>
+      <% nested_form.attributes(params[:action]).each do |attribute| %>
+        <div class="field-unit field-unit--<%= attribute.html_class %>">
+          <%= render_field attribute, f: has_many_f %>
+        </div>
+      <% end %>
+    </fieldset>
+  <% end %>
+<% else %>
   <%= f.select(field.attribute_key, nil, {}, multiple: true) do %>
     <%= options_for_select(field.associated_resource_options, field.selected_options) %>
   <% end %>
-</div>
+<% end %>
