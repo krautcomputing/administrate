@@ -20,7 +20,7 @@ module Administrate
       end
 
       def attribute_key
-        permitted_attribute.keys.first
+        "#{attribute.to_s.singularize}_ids"
       end
 
       def associated_resource_options
@@ -42,7 +42,7 @@ module Administrate
       end
 
       def permitted_attribute
-        self.class.permitted_attribute(attribute)
+        self.class.permitted_attribute(attribute, options)
       end
 
       def resources(page = nil)
