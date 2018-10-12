@@ -7,10 +7,10 @@ module Administrate
         super(data || resolver.resource_class.new)
       end
 
-      def self.permitted_attribute(attr, action)
+      def self.permitted_attribute(attr, options)
         related_dashboard_attributes =
           Administrate::ResourceResolver.new("admin/#{attr}").
-            dashboard_class.new.permitted_attributes(action) + [:id]
+            dashboard_class.new.permitted_attributes(options[:action]) + [:id]
 
         { "#{attr}_attributes": related_dashboard_attributes }
       end

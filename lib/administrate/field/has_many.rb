@@ -8,11 +8,15 @@ module Administrate
       DEFAULT_LIMIT = 5
 
       def self.permitted_attribute(attr, options)
-        related_dashboard_attributes = Administrate::ResourceResolver.new("admin/#{options[:class_name] || attr}").dashboard_class.new.permitted_attributes(options[:action]) + [:id]
-        {
-          "#{attr}_attributes":           related_dashboard_attributes,
+        attributes = {
           "#{attr.to_s.singularize}_ids": []
         }
+        unless options[:ignore_related_dashboard_attributes]
+          resolver = Administrate::ResourceResolver.new("admin/#{options[:class_name] || attr}")
+          related_dashboard_attributes = resolver.dashboard_class.new.permitted_attributes(options.merge(ignore_related_dashboard_attributes: true)) + [:id]
+          attributes.merge!("#{attr}_attributes": related_dashboard_attributes)
+        end
+        attributes
       end
 
       def associated_collection

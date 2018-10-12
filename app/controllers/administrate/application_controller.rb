@@ -215,7 +215,7 @@ module Administrate
     end
 
     def permitted_attributes
-      dashboard.permitted_attributes(params[:action])
+      dashboard.permitted_attributes(action: params[:action])
     end
 
     delegate :resource_class, :resource_name, :namespace, to: :resource_resolver

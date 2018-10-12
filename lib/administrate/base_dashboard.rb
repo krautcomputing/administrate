@@ -55,9 +55,9 @@ module Administrate
       self.class.const_get(const)
     end
 
-    def permitted_attributes(action)
-      form_attributes(action).map do |attr|
-        attribute_types[attr].permitted_attribute(attr, action)
+    def permitted_attributes(options)
+      form_attributes(options[:action]).map do |attr|
+        attribute_types[attr].permitted_attribute(attr, options)
       end.uniq
     end
 
