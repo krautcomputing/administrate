@@ -110,7 +110,6 @@ module Administrate
       true
     end
 
-
     def add_notice(notice)
       if request.xhr?
         response.headers[NOTICE_RESPONSE_HEADER] = [response.headers[NOTICE_RESPONSE_HEADER].presence, notice].compact.join(' ')
