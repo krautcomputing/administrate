@@ -8,11 +8,13 @@ module Administrate
       end
 
       def self.permitted_attribute(attr, options)
-        related_dashboard_attributes =
-          Administrate::ResourceResolver.new("admin/#{attr}").
-            dashboard_class.new.permitted_attributes(options[:action]) + [:id]
-
-        { "#{attr}_attributes": related_dashboard_attributes }
+        if options[:ignore_related_dashboard_attributes]
+          {}
+        else
+          resolver = Administrate::ResourceResolver.new("admin/#{options[:class_name] || attr}")
+          related_dashboard_attributes = resolver.dashboard_class.new.permitted_attributes(options.merge(ignore_related_dashboard_attributes: true)) + [:id]
+          { "#{attr}_attributes": related_dashboard_attributes }
+        end
       end
     end
   end
