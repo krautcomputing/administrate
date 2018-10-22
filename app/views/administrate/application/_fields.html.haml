@@ -1,0 +1,3 @@
+- fields.each do |field|
+  .field-unit{ class: "field-unit--#{field.html_class} field-unit--#{field.name.dasherize}" }
+    = render_field field, f: f

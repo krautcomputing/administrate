@@ -33,14 +33,7 @@ and renders all form fields for a resource's editable attributes.
     </div>
   <% end %>
 
-  <% page.attributes(params[:action]).each do |attribute| -%>
-    <div class="field-unit
-                field-unit--<%= attribute.html_class %>
-                field-unit--<%= attribute.name.dasherize %>"
-    >
-      <%= render_field attribute, f: f %>
-    </div>
-  <% end -%>
+  <%= render 'fields', fields: page.attributes(params[:action]), f: f %>
 
   <%= render_custom_fields page.resource, params[:action], f: f %>
 
