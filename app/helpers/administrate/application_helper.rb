@@ -5,7 +5,11 @@ module Administrate
     end
 
     def render_field(field, locals = {})
-      render partial: field_partial(field), locals: locals.merge(field: field)
+      if !(partial = field_partial(field)) && field.page == :show && !(partial = field_partial(field, :index))
+        raise "Could not find partial for field #{field}."
+      end
+
+      render partial: partial, locals: locals.merge(field: field)
     end
 
     def render_custom_fields(resource, action, locals = {})
@@ -30,25 +34,22 @@ module Administrate
       end
     end
 
-    def field_partial(field)
+    def field_partial(field, page = field.page)
       @field_partials ||= {}
-      @field_partials[field.name] ||= begin
+      @field_partials[field.name] ||= {}
+      @field_partials[field.name][page] ||= begin
         # Look up both the resource's class as well as it's base class (when STI is used).
         resource_classes = [field.resource.class, field.resource.class.base_class].uniq
         partial_candidates = resource_classes.map do |klass|
-          "admin/#{klass.to_s.underscore.pluralize}/fields/#{field.attribute}/#{field.page}"
+          "admin/#{klass.to_s.underscore.pluralize}/fields/#{field.attribute}/#{page}"
         end + [
-          "admin/fields/#{field.attribute}/#{field.page}",
-          "admin/fields/#{field.class.field_type}/#{field.page}",
-          "fields/#{field.class.field_type}/#{field.page}"
+          "admin/fields/#{field.attribute}/#{page}",
+          "admin/fields/#{field.class.field_type}/#{page}",
+          "fields/#{field.class.field_type}/#{page}"
         ]
-        partial = partial_candidates.detect do |partial_candidate|
+        partial_candidates.detect do |partial_candidate|
           lookup_context.exists? partial_candidate, [], true
         end
-        unless partial
-          fail "Could not find partial for field #{field}."
-        end
-        partial
       end
     end
 
