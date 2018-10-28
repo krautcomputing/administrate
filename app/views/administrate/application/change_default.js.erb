@@ -1,0 +1,3 @@
+const selector = ".field-unit--<%= field_name.dasherize %>";
+const fieldHtml = $("<%= j form_html %>").find(selector).html();
+$(selector).html(fieldHtml).trigger('content-loaded');

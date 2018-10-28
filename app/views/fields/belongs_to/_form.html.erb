@@ -20,7 +20,15 @@ that displays all possible records to associate with.
   <%= f.label field.permitted_attribute %>
 </div>
 <div class="field-unit__field">
-  <%= f.select(field.permitted_attribute) do %>
-    <%= options_for_select(field.associated_resource_options, field.selected_option) %>
+  <% if params[:action] == 'new' && field.data && params[:change_administrate_field_default] != field.attribute.to_s %>
+    <%= f.hidden_field field.permitted_attribute %>
+    <div class="record">
+      <%= link_to field.data, [:admin, field.data] %>
+      (<%= link_to 'change', url_for(params.merge(change_administrate_field_default: field.attribute)), data: { remote: true } %>)
+    </div>
+  <% else %>
+    <%= f.select(field.permitted_attribute) do %>
+      <%= options_for_select(field.associated_resource_options, field.selected_option) %>
+    <% end %>
   <% end %>
 </div>

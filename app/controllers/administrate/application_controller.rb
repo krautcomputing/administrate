@@ -24,9 +24,17 @@ module Administrate
     end
 
     def new
-      render locals: {
-        page: new_form
-      }
+      if request.xhr? && field_name = params[:change_administrate_field_default]
+        unless field = new_form.attributes(:new).detect { |field| field.name == field_name }
+          raise "Could not find field #{field_name}."
+        end
+        form_html = render_to_string(partial: 'single_field_form', locals: { page: new_form, field: field, render_field_defaults: false })
+        render 'change_default', locals: { field_name: field_name, form_html: form_html }, content_type: 'text/javascript'
+      else
+        render locals: {
+          page: new_form
+        }
+      end
     end
 
     def edit
