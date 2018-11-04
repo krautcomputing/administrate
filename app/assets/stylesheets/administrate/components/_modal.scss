@@ -9,11 +9,7 @@
     display: none;
   }
 
-  .back {
-    margin-right: 10px;
-  }
-
-  .forward {
+  a + a {
     margin-left: 10px;
   }
 }

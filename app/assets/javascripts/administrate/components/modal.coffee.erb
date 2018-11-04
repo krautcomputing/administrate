@@ -13,10 +13,13 @@ modalSelector = '#modal'
   $('.forward', modalSelector).toggle urlIndex < urls.length - 1
   $(modalSelector).data 'urlIndex', urlIndex
 
+  url = urls[urlIndex]
+  $('.open', modalSelector).attr 'href', url
+
   $modalBody = $('.modal-body', modalSelector)
   if showLoading
     $modalBody.text('Loading, please wait...')
-  $modalBody.load urls[urlIndex], ->
+  $modalBody.load url, ->
     $(@).find('a[data-method="post"], form').attr('data-remote', 'true')
     $(@).parents('.modal').trigger('content-loaded')
 
@@ -28,7 +31,7 @@ $(document)
   .on 'hide.bs.modal', modalSelector, ->
     $(modalSelector).data 'urls', []
   .on 'click', "#{modalSelector} a:not([data-method]):not([data-remote]):not([href='#']):not([href^='slack:']):not([href^='mailto:']):not([href$='.jpg']):not([href$='.png'])", (e) ->
-    unless e.metaKey
+    unless e.metaKey || $(e.currentTarget).parents('.modal-nav').length
       e.preventDefault()
       loadRemoteUrlInModal e.currentTarget.href
   .on 'click', "#{modalSelector} a[data-target='#{modalSelector}']", ->
