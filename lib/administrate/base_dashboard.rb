@@ -97,7 +97,7 @@ module Administrate
     def association_includes
       collection_attributes.select do |key|
         field = attribute_types[key]
-        next if field.respond_to?(:options) && field.options.key?(:include) && !field.options[:include]
+        next unless field.respond_to?(:options) && field.options[:include]
         association_classes.include?(field) || (field.respond_to?(:deferred_class) && association_classes.include?(field.deferred_class))
       end
     end
