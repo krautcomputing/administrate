@@ -48,7 +48,7 @@ $(document)
     if notice?.length
       toastr.success notice
   .on 'ajax:error', modalSelector, (_, xhr) ->
-    alert xhr.responseJSON.error
+    alert(xhr.responseJSON?.error || xhr.statusText)
   .on 'click', "#{modalSelector} .modal-nav .reload", (e) ->
     e.preventDefault()
     loadRemoteUrlInModal $(modalSelector).data('urlIndex')
