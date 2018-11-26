@@ -44,6 +44,6 @@ and renders all form fields for a resource's editable attributes.
   <% end %>
 
   <div class="form-actions">
-    <%= f.submit %>
+    <%= f.submit nil, data: { disable_with: t(:please_wait, scope: :administrate) } %>
   </div>
 <% end %>

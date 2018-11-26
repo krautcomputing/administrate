@@ -15,7 +15,7 @@
             = f.select :value, options_for_select(filter.values.map { |filter_value| [filter_value.label.is_a?(Proc) ? filter_value.label.call : filter_value.label, filter_value.key] }), {}, multiple_param
           - else
             - fail "Unexpected filter kind: #{filter.kind}"
-      = f.submit 'Apply'
+      = f.submit 'Apply', data: { disable_with: t(:please_wait, scope: :administrate) }
 
   - search_filter = [*filters, *all_filters].detect { |filter| filter.key == :search }
   - if search_filter.value.to_s.present?

@@ -1,6 +1,7 @@
 ---
 en:
   administrate:
+    please_wait: Please wait...
     actions:
       confirm: Are you sure?
       destroy: Destroy
