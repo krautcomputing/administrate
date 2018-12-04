@@ -27,37 +27,44 @@ modalSelector = '#modal'
       $(@).parents('.modal').trigger('content-loaded')
 
 $(document)
+
   .on 'show.bs.modal', modalSelector, (e) ->
     if e.relatedTarget?
       url = $(e.relatedTarget).data('url')
       loadRemoteUrlInModal url, true
+
   .on 'hide.bs.modal', modalSelector, ->
     $(modalSelector).data 'urls', []
+
   .on 'click', "#{modalSelector} a:not([data-method]):not([data-remote]):not([href='#']):not([href^='slack:']):not([href^='mailto:']):not([href$='.jpg']):not([href$='.png'])", (e) ->
     unless e.metaKey || $(e.currentTarget).parents('.modal-nav').length
       e.preventDefault()
       loadRemoteUrlInModal e.currentTarget.href
+
   .on 'click', "#{modalSelector} a[data-target='#{modalSelector}']", ->
     # When a modal toggle link is clicked inside a modal, trick Bootstrap
     # into thinking that the modal is not yet open by removing the data
     # from the element.
     $(modalSelector).data('bs.modal', null)
+
   .on 'ajax:success', modalSelector, (e, data, status, xhr) ->
     if data.next?.length
       loadRemoteUrlInModal data.next
-    else
-      $(@).modal('hide')
     notice = xhr.getResponseHeader('<%= Administrate::NOTICE_RESPONSE_HEADER %>')
     if notice?.length
       toastr.success notice
+
   .on 'ajax:error', modalSelector, (_, xhr) ->
     alert(xhr.responseJSON?.error || xhr.statusText)
+
   .on 'click', "#{modalSelector} .modal-nav .reload", (e) ->
     e.preventDefault()
     loadRemoteUrlInModal $(modalSelector).data('urlIndex')
+
   .on 'click', "#{modalSelector} .modal-nav .back", (e) ->
     e.preventDefault()
     loadRemoteUrlInModal $(modalSelector).data('urlIndex') - 1
+
   .on 'click', "#{modalSelector} .modal-nav .forward", (e) ->
     e.preventDefault()
     loadRemoteUrlInModal $(modalSelector).data('urlIndex') + 1
