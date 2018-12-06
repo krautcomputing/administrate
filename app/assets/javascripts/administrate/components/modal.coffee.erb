@@ -1,6 +1,6 @@
 modalSelector = '#modal'
 
-@loadRemoteUrlInModal = (urlOrIndex, showLoading = false) ->
+@loadRemoteUrlInModal = (urlOrIndex, showLoading = false, errorCallback = null) ->
   urls = $(modalSelector).data('urls') || []
   if Number.isInteger(urlOrIndex)
     urlIndex = urlOrIndex
@@ -21,7 +21,9 @@ modalSelector = '#modal'
     $modalBody.text('Loading, please wait...')
   $modalBody.load url, (_, status, xhr) ->
     if status == 'error'
-      alert "Error loading #{url}\n\n#{xhr.status} #{xhr.statusText}"
+      if errorCallback?
+        errorCallback.call()
+      alert "Error loading #{url}\n\n#{xhr.status} #{xhr.responseJSON?.error || xhr.statusText}"
     else
       $(@).find('a[data-method="post"], form').attr('data-remote', 'true')
       $(@).parents('.modal').trigger('content-loaded')
@@ -36,10 +38,20 @@ $(document)
   .on 'hide.bs.modal', modalSelector, ->
     $(modalSelector).data 'urls', []
 
-  .on 'click', "#{modalSelector} a:not([data-method]):not([data-remote]):not([href='#']):not([href^='slack:']):not([href^='mailto:']):not([href$='.jpg']):not([href$='.png'])", (e) ->
+  .on 'click', "#{modalSelector} a.disabled", (e) ->
+    e.preventDefault()
+
+  .on 'click', "#{modalSelector} a:not([data-method]):not([data-remote]):not([href='#']):not([href^='slack:']):not([href^='mailto:']):not([href$='.jpg']):not([href$='.png']):not(.disabled)", (e) ->
     unless e.metaKey || $(e.currentTarget).parents('.modal-nav').length
       e.preventDefault()
-      loadRemoteUrlInModal e.currentTarget.href
+      $(e.currentTarget)
+        .data('original-text', $(e.currentTarget).text())
+        .text('Loading...')
+        .addClass('disabled')
+      loadRemoteUrlInModal e.currentTarget.href, false, ->
+        $(e.currentTarget)
+          .text($(e.currentTarget).data('original-text'))
+          .removeClass('disabled')
 
   .on 'click', "#{modalSelector} a[data-target='#{modalSelector}']", ->
     # When a modal toggle link is clicked inside a modal, trick Bootstrap
