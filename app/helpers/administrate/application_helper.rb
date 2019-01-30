@@ -1,7 +1,8 @@
 module Administrate
   module ApplicationHelper
     def page_html_class
-      "#{params[:controller].split('/').last} #{params[:action]}"
+      action_name = { 'create' => 'new', 'update' => 'edit' }[controller.action_name] || controller.action_name
+      [controller.controller_name, action_name].join(' ')
     end
 
     def render_field(field, locals = {})
