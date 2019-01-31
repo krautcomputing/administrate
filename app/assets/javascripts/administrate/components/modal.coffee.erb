@@ -14,8 +14,6 @@ modalSelector = '#modal'
   $(modalSelector).data 'urlIndex', urlIndex
 
   url = urls[urlIndex]
-  $('.open', modalSelector).attr 'href', url
-
   $modalBody = $('.modal-body', modalSelector)
   if showLoading
     $modalBody.text('Loading, please wait...')
@@ -25,6 +23,7 @@ modalSelector = '#modal'
         errorCallback.call()
       alert "Error loading #{url}\n\n#{xhr.status} #{xhr.responseJSON?.error || xhr.statusText}"
     else
+      $('.open', modalSelector).attr 'href', url
       $(@).find('a[data-method="post"], form').attr('data-remote', 'true')
       $(@).parents('.modal').trigger('content-loaded')
 
@@ -41,8 +40,8 @@ $(document)
   .on 'click', "#{modalSelector} a.disabled", (e) ->
     e.preventDefault()
 
-  .on 'click', "#{modalSelector} a:not([data-method]):not([data-remote]):not([href='#']):not([href^='slack:']):not([href^='mailto:']):not([href$='.jpg']):not([href$='.png']):not(.disabled)", (e) ->
-    unless e.metaKey || $(e.currentTarget).parents('.modal-nav').length
+  .on 'click', "#{modalSelector} a:not([data-method]):not([data-remote]):not([href='#']):not([href$='.jpg']):not([href$='.png']):not(.disabled)", (e) ->
+    unless e.metaKey || $(e.currentTarget).parents('.modal-nav').length || e.currentTarget.hostname != window.location.hostname
       e.preventDefault()
       $(e.currentTarget)
         .data('original-text', $(e.currentTarget).text())
