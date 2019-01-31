@@ -37,7 +37,7 @@ as well as a link to its edit page.
       <% html_options[:class] = html_options.fetch(:class, '').split(/\s+/).append('button').join(' ') %>
       <% unless url.is_a?(String) %>
         <% options = url.last.is_a?(Hash) ? url.pop : {} %>
-        <% url = polymorphic_path(url, options) %>
+        <% url = polymorphic_url(url, options) %>
       <% end %>
       <%= link_to name, url, html_options %>
     <% end %>
