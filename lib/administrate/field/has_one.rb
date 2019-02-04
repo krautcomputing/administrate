@@ -7,6 +7,16 @@ module Administrate
         super(data || resolver.resource_class.new)
       end
 
+      def form_attributes(action)
+        nested_form.attributes(action).tap do |attributes|
+          if ignore_form_attributes = options[:ignore_form_attributes]
+            attributes.reject! do |attribute|
+              ignore_form_attributes.include?(attribute.attribute)
+            end
+          end
+        end
+      end
+
       def self.permitted_attribute(attr, options)
         if options[:ignore_related_dashboard_attributes]
           {}
