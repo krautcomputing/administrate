@@ -14,7 +14,7 @@ module Administrate
         dashboard.display_resource(resource)
       end
 
-      def attributes(action)
+      def attributes(_)
         dashboard.show_page_attributes.map do |attr_name|
           attribute_field(dashboard, resource, attr_name, :show)
         end

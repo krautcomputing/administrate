@@ -4,6 +4,8 @@ module Administrate
 
     layout -> { request.xhr? ? 'administrate/xhr' : 'administrate/application' }
 
+    before_filter :render_field_select, only: %i(new edit)
+
     def index
       resources = Filter.apply(resource_resolver, filters)
       resources = resources.includes(*resource_includes) if resource_includes.any?
@@ -24,22 +26,14 @@ module Administrate
     end
 
     def new
-      if request.xhr? && field_name = params[:change_administrate_field_default]
-        unless field = new_form.attributes(:new).detect { |field| field.name == field_name }
-          raise "Could not find field #{field_name}."
-        end
-        form_html = render_to_string(partial: 'single_field_form', locals: { page: new_form, field: field, render_field_defaults: false })
-        render 'change_default', locals: { field_name: field_name, form_html: form_html }, content_type: 'text/javascript'
-      else
-        render locals: {
-          page: new_form
-        }
-      end
+      render locals: {
+        page: new_form
+      }
     end
 
     def edit
       render locals: {
-        page: edit_page
+        page: edit_form
       }
     end
 
@@ -79,7 +73,7 @@ module Administrate
         if request.xhr?
           render json: { error: requested_resource.errors.full_messages.join(', ') }, status: :unprocessable_entity
         else
-          render :edit, locals: { page: edit_page }
+          render :edit, locals: { page: edit_form }
         end
       end
     end
@@ -171,8 +165,8 @@ module Administrate
       @_show_page ||= Administrate::Page::Show.new(dashboard, requested_resource)
     end
 
-    def edit_page
-      @_edit_page ||= Administrate::Page::Form.new(dashboard, requested_resource)
+    def edit_form
+      @_edit_form ||= Administrate::Page::Form.new(dashboard, requested_resource)
     end
 
     def new_form
@@ -257,6 +251,23 @@ module Administrate
     # Add authorization logic to this method.
     def authorize_resource(resource)
       resource
+    end
+
+    def render_field_select
+      form = action_name == 'new' ? new_form : edit_form
+      if request.xhr? && field_name = params[:load_administrate_field_select]
+        unless field = form.attributes(action_name).detect { |field| field.name == field_name }
+          raise "Could not find field #{field_name}."
+        end
+        form_html = render_to_string(
+          partial: 'single_field_form',
+          locals: {
+            page:  form,
+            field: field
+          }
+        )
+        render 'field_select', locals: { field_name: field_name, form_html: form_html }, content_type: 'text/javascript'
+      end
     end
   end
 end
