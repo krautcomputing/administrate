@@ -27,7 +27,7 @@ Gem::Specification.new do |s|
   s.add_dependency "neat", "~> 1.1"
   s.add_dependency "normalize-rails", ">= 3.0"
   s.add_dependency "rails", ">= 4.2", "< 5.1"
-  s.add_dependency "sass-rails", "~> 5.0"
+  s.add_dependency "sassc-rails", "~> 2.1"
   s.add_dependency "selectize-rails", "~> 0.6"
   s.add_dependency "turbolinks", "~> 5.0"
   s.add_dependency 'rails-assets-jquery.floatThead', '~> 2.0'
