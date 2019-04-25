@@ -17,7 +17,6 @@ require "administrate/order"
 require "administrate/resource"
 require "administrate/resource_resolver"
 require "administrate/filter"
-require "administrate/search"
 require "administrate/namespace"
 
 module Administrate

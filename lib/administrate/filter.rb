@@ -26,11 +26,47 @@ module Administrate
       end
 
       def apply(resource_resolver, filters)
-        relation = resource_resolver.resource_class.all
+        resource_class = resource_resolver.resource_class
+        relation       = resource_class.all
         filters.each do |filter|
           relation = case
           when filter.key == :search
-            Administrate::Search.new(resource_resolver, filter.value.key.to_s).run
+            unless resource_class.respond_to?(:internal_search)
+              # Find fields that are searchable and not globalized.
+              search_attrs = resource_resolver.dashboard_class::ATTRIBUTE_TYPES.select do |_, type|
+                type.searchable? &&
+                !(type.is_a?(Administrate::Field::Deferred) && type.options[:globalize])
+              end.keys
+
+              # Select fields that are db columns.
+              column_search_attrs = search_attrs.select { |attr| resource_class.column_names.include?(attr.to_s) }
+              if column_search_attrs.none?
+                raise 'Could not find any column search attributes.'
+              end
+
+              pg_search_params = {
+                against: column_search_attrs
+              }
+
+              # Select fields that are associations.
+              association_search_attrs = search_attrs.select { |attr| resource_class.reflections.include?(attr.to_s) }
+              if association_search_attrs.any?
+                pg_search_params[:associated_against] = association_search_attrs.each_with_object({}) do |association_name, hash|
+                  # Find fields of association that are searchable, not globalized and db columns.
+                  relation_resource_resolver = Administrate::ResourceResolver.new("admin/#{association_name.to_s.pluralize}")
+                  relation_search_attrs = relation_resource_resolver.dashboard_class::ATTRIBUTE_TYPES.select do |attr, type|
+                    type.searchable? &&
+                    !(type.is_a?(Administrate::Field::Deferred) && type.options[:globalize]) &&
+                    relation_resource_resolver.resource_class.column_names.include?(attr.to_s)
+                  end.keys
+                  hash[association_name] = relation_search_attrs
+                end
+              end
+
+              # Define search scope.
+              resource_class.pg_search_scope :internal_search, pg_search_params
+            end
+            relation.where(id: resource_class.internal_search(filter.value.key.to_s))
           when filter.action
             filter.instance_exec(relation, &filter.action)
           else
