@@ -18,17 +18,13 @@ module Administrate
         end.partition do |attribute|
           resource_class.reflections.keys.include?(attribute.to_s)
         end
-        # Join with acting_as class if any attributes from that class are searchable.
-        if resource_class.acting_as? && search_attributes.any? { |attribute| resource_class.acting_as_model.attribute_method?(attribute) }
-          relation.joins!(resource_class.acting_as_name.to_sym)
-        end
         # Set up condition parts and params
         condition_parts = []
         condition_params = { query: "%#{@term}%" }
         search_attributes.each do |attribute|
-          next unless table_name = table_name(attribute)
-          attribute_with_table_name = "#{table_name}.#{attribute}"
-          column = resource_class.columns_hash[attribute.to_s] || (resource_class.acting_as? && resource_class.acting_as_model.columns_hash[attribute.to_s])
+          next unless resource_class.column_names.include?(attribute.to_s)
+          attribute_with_table_name = "#{resource_class.table_name}.#{attribute}"
+          column = resource_class.columns_hash[attribute.to_s]
           case
           when column.type == :integer && enum = resource_class.defined_enums[attribute.to_s]
             enum_values = enum.select { |k, _| k =~ /#{Regexp.escape(@term)}/i }
@@ -41,23 +37,11 @@ module Administrate
             # Find IDs of records that contain the query in the column array.
             # Use a subquery and `array_to_string` so we can us ILIKE.
             list_column = "#{attribute}_list"
-            if resource_class.acting_as? && resource_class.acting_as_model.attribute_method?(attribute)
-              acting_as_ids = resource_class.acting_as_model.
-                      select("#{resource_class.acting_as_model.table_name}.id").
-                      from("#{resource_class.acting_as_model.table_name}, array_to_string(#{attribute_with_table_name}, ',') AS #{list_column}").
-                      where("#{list_column} ILIKE ?", "%#{@term}%")
-              ids = resource_class.
-                      joins(resource_class.acting_as_name.to_sym).
-                      select("#{resource_class.table_name}.id").
-                      where("#{resource_class.acting_as_model.table_name}.id IN (?)", acting_as_ids).
-                      map(&:id)
-            else
-              ids = resource_class.
-                      select("#{resource_class.table_name}.id").
-                      from("#{resource_class.table_name}, array_to_string(#{attribute_with_table_name}, ',') AS #{list_column}").
-                      where("#{list_column} ILIKE ?", "%#{@term}%").
-                      map(&:id)
-            end
+            ids = resource_class.
+                    select("#{resource_class.table_name}.id").
+                    from("#{resource_class.table_name}, array_to_string(#{attribute_with_table_name}, ',') AS #{list_column}").
+                    where("#{list_column} ILIKE ?", "%#{@term}%").
+                    map(&:id)
             condition_param = "#{attribute}_ids".to_sym
             condition_parts << "#{resource_class.table_name}.id IN (:#{condition_param})"
             condition_params[condition_param] = ids
@@ -109,14 +93,6 @@ module Administrate
     private
 
     delegate :resource_class, to: :resolver
-
-    def table_name(attribute)
-      if resource_class.acting_as? && resource_class.acting_as_model.column_names.include?(attribute.to_s)
-        resource_class.acting_as_model.table_name
-      elsif resource_class.column_names.include?(attribute.to_s)
-        resource_class.table_name
-      end
-    end
 
     def attribute_types
       resolver.dashboard_class::ATTRIBUTE_TYPES

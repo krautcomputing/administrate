@@ -8,11 +8,8 @@ module Administrate
     def apply(relation)
       return relation if attribute.nil?
 
-      case
-      when relation.columns_hash.key?(attribute.to_s)
+      if relation.columns_hash.key?(attribute.to_s)
         relation.order(attribute => direction)
-      when relation.acting_as? && relation.acting_as_model.columns_hash.key?(attribute.to_s)
-        relation.order("#{relation.acting_as_model.table_name}.#{attribute} #{direction}")
       else
         raise "Don't know how to sort by #{attribute}."
       end
