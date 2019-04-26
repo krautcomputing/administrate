@@ -52,8 +52,9 @@ module Administrate
               association_search_attrs = search_attrs.select { |attr| resource_class.reflections.include?(attr.to_s) }
               if association_search_attrs.any?
                 pg_search_params[:associated_against] = association_search_attrs.each_with_object({}) do |association_name, hash|
+                  associated_class_name = resource_class.reflections[association_name.to_s].class_name
                   # Find fields of association that are searchable, not globalized and db columns.
-                  relation_resource_resolver = Administrate::ResourceResolver.new("admin/#{association_name.to_s.pluralize}")
+                  relation_resource_resolver = Administrate::ResourceResolver.new("admin/#{associated_class_name}")
                   relation_search_attrs = relation_resource_resolver.dashboard_class::ATTRIBUTE_TYPES.select do |attr, type|
                     type.searchable? &&
                     !(type.is_a?(Administrate::Field::Deferred) && type.options[:globalize]) &&
