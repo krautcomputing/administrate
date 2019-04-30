@@ -15,6 +15,19 @@
 .field-unit__field {
   @include span-columns(5 of 12);
   min-width: 400px;
+
+  label {
+    display: inline-block;
+    font-weight: normal;
+
+    + input[type="radio"] {
+      margin-left: 30px;
+    }
+  }
+
+  input[type="radio"]:checked + label {
+    font-weight: bold;
+  }
 }
 
 .field-unit--nested {

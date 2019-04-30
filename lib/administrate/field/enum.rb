@@ -3,7 +3,7 @@ require_relative "base"
 module Administrate
   module Field
     class Enum < Field::Base
-      def select_options
+      def display_options_and_keys
         resource.class.public_send(attribute.to_s.pluralize).keys.map { |key| [display_option(key), key] }
       end
 
