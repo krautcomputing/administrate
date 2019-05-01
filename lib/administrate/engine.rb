@@ -6,7 +6,7 @@ require "kaminari"
 require "momentjs-rails"
 require "neat"
 require "bourbon"
-require "sass-rails"
+require "sassc-rails"
 require "selectize-rails"
 require "sprockets/railtie"
 
