@@ -38,18 +38,17 @@ module Administrate
                 !(type.is_a?(Administrate::Field::Deferred) && type.options[:globalize])
               end.keys
 
-              # Select fields that are db columns.
-              column_search_attrs = search_attrs.select { |attr| resource_class.column_names.include?(attr.to_s) }
-              if column_search_attrs.none?
-                raise 'Could not find any column search attributes.'
+              column_search_attrs      = search_attrs.select { |attr| resource_class.column_names.include?(attr.to_s) }
+              association_search_attrs = search_attrs.select { |attr| resource_class.reflections.include?(attr.to_s) }
+              if column_search_attrs.none? && association_search_attrs.none?
+                raise 'Could find neither column nor association search attributes.'
               end
 
-              pg_search_params = {
-                against: column_search_attrs
-              }
+              pg_search_params = {}
 
-              # Select fields that are associations.
-              association_search_attrs = search_attrs.select { |attr| resource_class.reflections.include?(attr.to_s) }
+              if column_search_attrs.any?
+                pg_search_params[:against] = column_search_attrs
+              end
               if association_search_attrs.any?
                 pg_search_params[:associated_against] = association_search_attrs.each_with_object({}) do |association_name, hash|
                   associated_class_name = resource_class.reflections[association_name.to_s].class_name
