@@ -1,2 +1,2 @@
-= form_for [namespace, page.resource] do |f|
+= form_for(page.url || [namespace, page.resource]) do |f|
   = render 'fields', fields: [field], f: f
