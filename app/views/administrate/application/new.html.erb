@@ -15,12 +15,7 @@ to do the heavy lifting.
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Page/Form
 %>
 
-<% content_for(:title) do %>
-  <%= t(
-    "administrate.actions.new_resource",
-    name: display_resource_name(page.resource_name, false)
-  ) %>
-<% end %>
+<% content_for(:title) { local_assigns.key?(:title) ? title : t("administrate.actions.new_resource", name: display_resource_name(page.resource_name, false)) } %>
 
 <header class="header">
   <h1 class="header__heading"><%= content_for(:title) %></h1>
