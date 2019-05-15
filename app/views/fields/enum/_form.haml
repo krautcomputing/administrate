@@ -1,9 +1,11 @@
 .field-unit__label
   = f.label field.attribute
-.field-unit__field
-  - if field.options.key?(:radio_buttons) ? field.options[:radio_buttons] : field.display_options_and_keys.size <= 3
+.field-unit__field{ class: field.radio_buttons_inline ? 'radio-buttons-inline' : nil }
+  - if field.radio_buttons
     - field.display_options_and_keys.each do |display_option, key|
-      = f.radio_button field.attribute, key
-      = f.label [field.attribute, key].join('_'), display_option
+      = f.label [field.attribute, key].join('_') do
+        = f.radio_button field.attribute, key
+        %span
+          = display_option
   - else
     = f.select field.attribute, field.display_options_and_keys, include_blank: true

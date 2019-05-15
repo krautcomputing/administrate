@@ -17,6 +17,26 @@ module Administrate
           '-'
         end
       end
+
+      def only_a_few_options
+        display_options_and_keys.size <= 3
+      end
+
+      def radio_buttons
+        if options.key?(:radio_buttons)
+          options[:radio_buttons]
+        else
+          only_a_few_options
+        end
+      end
+
+      def radio_buttons_inline
+        if options.key?(:radio_buttons_inline)
+          options[:radio_buttons_inline]
+        else
+          only_a_few_options
+        end
+      end
     end
   end
 end
