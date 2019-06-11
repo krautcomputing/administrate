@@ -19,7 +19,7 @@ and is augmented with [Selectize].
 [Selectize]: http://brianreavis.github.io/selectize.js
 %>
 
-<% if field.nested? %>
+<% if nested = field.options[:nested] %>
   <%= f.fields_for field.attribute, field.data do |has_many_f| %>
     <% nested_form = field.nested_form(has_many_f.object) %>
     <fieldset class="field-unit--nested">
@@ -27,6 +27,15 @@ and is augmented with [Selectize].
       <% nested_form.attributes(params[:action]).each do |attribute| %>
         <div class="field-unit field-unit--<%= attribute.html_class %>">
           <%= render_field attribute, f: has_many_f %>
+        </div>
+      <% end %>
+      <% if nested.is_a?(Hash) && nested[:allow_remove] %>
+        <div class="field-unit">
+          <div class="field-unit__label">
+          </div>
+          <div class="field-unit__field">
+            <%= link_to '(remove)', '#', class: 'remove' %>
+          </div>
         </div>
       <% end %>
     </fieldset>

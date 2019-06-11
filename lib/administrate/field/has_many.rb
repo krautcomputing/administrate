@@ -41,10 +41,6 @@ module Administrate
         options.fetch(:limit, DEFAULT_LIMIT)
       end
 
-      def nested?
-        !!options[:nested]
-      end
-
       def permitted_attribute
         self.class.permitted_attribute(attribute, options)
       end
