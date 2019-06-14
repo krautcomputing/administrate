@@ -12,9 +12,7 @@ module Administrate
       end
 
       def associated_resource_options
-        [nil] + candidate_resources.map do |resource|
-          [display_candidate_resource(resource), resource.send(primary_key)]
-        end
+        [nil] + super
       end
 
       def selected_option

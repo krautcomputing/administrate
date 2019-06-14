@@ -15,6 +15,12 @@ module Administrate
         "#{associated_class_name}Dashboard".safe_constantize.try(:new)
       end
 
+      def associated_resource_options
+        candidate_resources.map do |resource|
+          [display_candidate_resource(resource), resource.send(primary_key)]
+        end
+      end
+
       def nested_form(resource)
         Administrate::Page::Form.new(resolver.dashboard_class.new, resource)
       end

@@ -27,14 +27,8 @@ module Administrate
         "#{attribute.to_s.singularize}_ids"
       end
 
-      def associated_resource_options
-        candidate_resources.map do |resource|
-          [display_candidate_resource(resource), resource.send(primary_key)]
-        end
-      end
-
       def selected_options
-        data && data.map { |object| object.send(primary_key) }
+        data && data.map { |object| object.public_send(primary_key) }
       end
 
       def limit

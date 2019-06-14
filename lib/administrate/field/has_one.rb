@@ -17,6 +17,10 @@ module Administrate
         end
       end
 
+      def permitted_attribute
+        foreign_key
+      end
+
       def self.permitted_attribute(attr, options)
         if options[:ignore_related_dashboard_attributes]
           {}

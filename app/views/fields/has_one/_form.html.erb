@@ -16,9 +16,23 @@ The form will be rendered as nested_from to parent relationship.
 [1]: http://www.rubydoc.info/gems/administrate/Administrate/Field/HasOne
 %>
 
-<%= f.fields_for field.attribute, field.data || field.nested_form.resource.class.new do |has_one_f| %>
-  <fieldset class="field-unit--nested">
-    <legend><%= field.nested_form.resource_name.titleize %></legend>
-    <%= render 'fields', fields: field.form_attributes(params[:action]), f: has_one_f %>
-  </fieldset>
+<% if !field.options.key?(:nested) || field.options[:nested] %>
+  <%= f.fields_for field.attribute, field.data || field.nested_form.resource.class.new do |has_one_f| %>
+    <fieldset class="field-unit--nested">
+      <legend><%= field.nested_form.resource_name.titleize %></legend>
+      <%= render 'fields', fields: field.form_attributes(params[:action]), f: has_one_f %>
+    </fieldset>
+  <% end %>
+<% else %>
+  <div class="field-unit__label">
+    <%= f.label field.attribute, for: "#{f.object_name}_#{field.permitted_attribute}" %>
+  </div>
+  <div class="field-unit__field">
+    <% object = field.data || field.resource.public_send("build_#{field.attribute}") %>
+    <%= f.fields_for field.attribute, object, include_id: false do |has_one_f| %>
+      <%= has_one_f.select :id, nil, include_blank: true do %>
+        <%= options_for_select(field.associated_resource_options, field.data.try(:id)) %>
+      <% end %>
+    <% end %>
+  </div>
 <% end %>
