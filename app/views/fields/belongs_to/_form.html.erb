@@ -23,7 +23,7 @@ that displays all possible records to associate with.
   <% if field.data && params[:load_administrate_field_select] != field.attribute.to_s %>
     <%= f.hidden_field field.permitted_attribute %>
     <div class="record">
-      <%= link_to field.data, [:admin, field.data] %>
+      <%= link_to field.display_associated_resource, [:admin, field.data] %>
       (<%= link_to 'change', url_for(params.merge(load_administrate_field_select: field.attribute)), data: { remote: true } %>)
     </div>
   <% else %>
