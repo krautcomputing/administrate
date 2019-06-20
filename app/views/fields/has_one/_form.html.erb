@@ -17,11 +17,13 @@ The form will be rendered as nested_from to parent relationship.
 %>
 
 <% if !field.options.key?(:nested) || field.options[:nested] %>
-  <%= f.fields_for field.attribute, field.data || field.nested_form.resource.class.new do |has_one_f| %>
-    <fieldset class="field-unit--nested">
-      <legend><%= field.nested_form.resource_name.titleize %></legend>
-      <%= render 'fields', fields: field.form_attributes(params[:action]), f: has_one_f %>
-    </fieldset>
+  <% if object = field.data || (%w(new create).include?(params[:action]) && field.nested_form.resource.class.new) %>
+    <%= f.fields_for field.attribute, object do |has_one_f| %>
+      <fieldset class="field-unit--nested">
+        <legend><%= field.nested_form.resource_name.titleize %></legend>
+        <%= render 'fields', fields: field.form_attributes(params[:action]), f: has_one_f %>
+      </fieldset>
+    <% end %>
   <% end %>
 <% else %>
   <div class="field-unit__label">
