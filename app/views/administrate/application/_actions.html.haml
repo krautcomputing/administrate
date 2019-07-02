@@ -1,0 +1,5 @@
+- if actions = content_for(:actions)
+  = actions
+
+  -# Clear actions.
+  - content_for :actions, '', flush: true
