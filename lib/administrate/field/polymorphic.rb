@@ -3,11 +3,23 @@ require_relative "associative"
 module Administrate
   module Field
     class Polymorphic < BelongsTo
-      def associated_resource_grouped_options
-        classes.map do |klass|
-          [klass.to_s, candidate_resources_for(klass).map do |resource|
+      def associated_resource_options
+        resources_to_options = ->(resources) {
+          resources.map do |resource|
             [display_candidate_resource(resource), resource.to_global_id]
-          end]
+          end
+        }
+        case
+        when candidate_resources = options[:candidate_resources]
+          candidate_resources.call(resource).transform_values(&resources_to_options.method(:call))
+        when classes = options[:classes]
+          classes.map do |klass|
+            [
+              klass.to_s,
+              resources_to_options.call(candidate_resources_for(klass))
+            ]
+          end
+        else raise "Cannot determine associated resource options for polymorphic field #{self}."
         end
       end
 
@@ -27,10 +39,6 @@ module Administrate
 
       def associated_dashboard(klass = data.class)
         "#{klass.name}Dashboard".constantize.new
-      end
-
-      def classes
-        options.fetch(:classes, [])
       end
 
       private
